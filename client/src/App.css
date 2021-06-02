@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: black;
+    border-radius: 10px;
+}
+.test {
+    border: 1px solid red;
+}
+@media only screen and (max-width: 1260px){
+    .left, .right{ display: none}
+    
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: green;
+}
+input {
+    border-radius: 7px;
+}
+.canclick {
+    transition: background-color 0.25s;
+}
+.canclick:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.432);
+}
+#Login input {
+    border: 2px solid gray
+}
+#Login input:focus {
+    border: 2px solid green;
+    outline: none;
+}
+#NavBar {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    border-bottom: 1px solid #393a3b; 
+    background-color: #79b486;
+    z-index: 10;
+}
+.circle0 {
+    background-color: rgb(226, 224, 224);
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    border-radius: 100%;
+}
+.circle1 {
+    background-color: rgb(226, 224, 224);
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 100%;
+}
+.circle2 {
+    background-color: rgb(226, 224, 224);
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
+    border-radius: 100%;
+}
+.circle3 {
+    border: 1px solid black;
+    background-color: rgb(226, 224, 224);
+    width: 168px;
+    height: 168px;
+    min-width: 168px;
+    min-height: 168px;
+    border-radius: 100%;
+}
+.searchfield {
+    height: 80%;
+    margin: 1px 0;
+    border-radius: 25px;
+    outline: none;
+    text-indent: 10px; 
+}
