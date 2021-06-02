@@ -67,4 +67,4 @@ app.get('/fetch', (req, res) => {
         else res.send(result)
     })
 })
-app.listen(3001)
+app.listen(3001);
