@@ -1,9 +1,11 @@
 import {combineReducers} from 'redux'
-import tab from './tab'
-import clientinfo from './clientinfo'
+import { firebaseReducer } from 'react-redux-firebase'
+import { firestoreReducer } from 'redux-firestore'
+import { chatlist } from './chatlist'
 const combineReducer = combineReducers({
-    clientinfo: clientinfo,
-    tab: tab,
-
+    firebase: firebaseReducer,
+    chatlist: chatlist,
+    firestore: firestoreReducer,
+    
 })
 export default combineReducer

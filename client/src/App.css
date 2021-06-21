@@ -2,17 +2,22 @@
     margin: 0;
     box-sizing: border-box;
     text-decoration: none;
-    color: black;
-    border-radius: 10px;
+    color: inherit;
+}
+input {
+    outline: none;
+    padding-left: 10px;
 }
 .test {
     border: 1px solid red;
 }
-@media only screen and (max-width: 1260px){
-    .left, .right{ display: none}
-    
+.test2 {
+    border: 1px solid blue;
 }
-
+#home {
+    display: flex;
+    justify-content: space-between;
+}
 button:hover {
     cursor: pointer;
     background-color: green;
@@ -27,6 +32,16 @@ input {
     cursor: pointer;
     background-color: rgba(128, 128, 128, 0.432);
 }
+.canclick2:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.canclick3 {
+    cursor: pointer;
+}
+.cantclick:hover {
+    cursor: not-allowed;
+}
 #Login input {
     border: 2px solid gray
 }
@@ -36,20 +51,20 @@ input {
 }
 #NavBar {
     display: flex;
-    position: fixed;
+    position: sticky;
+    top: 0;
     width: 100%;
     height: 50px;
     justify-content: center;
     border-bottom: 1px solid #393a3b; 
-    background-color: #79b486;
     z-index: 10;
 }
 .circle0 {
     background-color: rgb(226, 224, 224);
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
-    min-height: 34px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
     border-radius: 100%;
 }
 .circle1 {
@@ -77,10 +92,83 @@ input {
     min-height: 168px;
     border-radius: 100%;
 }
+.icon0 {
+    width: 20px;
+    height: 20px;
+    
+    
+}
 .searchfield {
     height: 80%;
     margin: 1px 0;
     border-radius: 25px;
     outline: none;
     text-indent: 10px; 
+}
+.color1 {
+    background-color: #003b46;
+}
+.color2 {
+    background-color: #07575b;
+}
+.color3 {
+    background-color: #66a5ad;
+}
+.color4 {
+    background-color: #c4dfe6;
+}
+#NavMid {
+    width: 680px;
+    display: flex;
+    justify-content: space-around;
+}
+/* customize scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #c4dfe6; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #548aee; 
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #003b46; 
+    display: block;
+}
+
+@media only screen and (max-width: 1100px) {
+    .left {
+        display: none;
+    }
+    #home {
+        justify-content: center;
+    }
+    #NavMid {
+        width: 40%;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .collapse1000 {
+        display: none;
+    }
+}
+@media only screen and (max-width: 830px) {
+    .right {
+        display: none;
+    }
+    .collapse830 {
+        display: none;
+    }
+}
+@media only screen and (max-width: 730px) {
+    #NavMid {display: none}
 }

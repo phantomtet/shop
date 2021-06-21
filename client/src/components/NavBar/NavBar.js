@@ -3,32 +3,29 @@ import AccountOption from './AccountOption'
 import Notification from './Notification'
 import Messages from './Messages'
 import Menu from './Menu'
-import {HomeButton} from './Home'
+import {HomeButton} from '../Home/Home'
 import {FriendsButton} from './Friends'
 import Watch from './Watch'
 import Market from './Market'
 import Groups from './Groups'
-import { useDispatch, useSelector } from 'react-redux'
-import { addinfo } from '../../actions/clientinfoAction'
+import {BsSearch} from 'react-icons/bs'
+import {FaFacebook} from 'react-icons/fa'
 export default function NavBar (props) {
     
     return(
-        <div id='NavBar'>
-            <div style={{display: 'flex', position: 'absolute', left: '0', margin: '5px 0 5px 10px'}}>
-                <img class='circle1 canclick' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLeVeunciOSCosTRKOAeiKQXMZfQ8h5H5REXHpY3NTCCJ5NpUIZGrTvNyeKEtRZP-iflo&usqp=CAU'/>
+        <div id='NavBar' className='color3' style={{justifyContent: 'center'}}>
+            <div style={{display: 'flex', position: 'absolute', left: '0', margin: '5px 0 5px 15px'}} >
+                <FaFacebook size='40' className='canclick'/>
                 <Search/> 
-                
             </div>
-            <div style={{display: 'flex'}}>
-                
+            <div id='NavMid'>
                     <HomeButton/>
                     <FriendsButton/>
                     <Watch/>
                     <Market/>
                     <Groups/>
-                
             </div>
-            <div style={{display: 'flex', position: 'absolute', right: '0', margin: '5px 10px 5px 0'}}>
+            <div style={{display: 'flex', position: 'absolute', right: 0}}>
                 <Menu/>
                 <Messages/>
                 <Notification/>
@@ -38,7 +35,7 @@ export default function NavBar (props) {
     )
 }
 
-function Search (props) {
+function Search () {
     const [isOpen, setOpen] = useState(false)
     const open = () => {
         setOpen(true)
@@ -51,13 +48,14 @@ function Search (props) {
         document.addEventListener('mousedown', func)
     }
     return(
-        <div id='searchbar'  style={{display: 'flex',}}>
+        <div id='searchbar' style={{display: 'flex',}}>
             { isOpen ? 
             <div>
-                <input autoFocus={isOpen} class='searchfield' placeholder='Search on facebook'/>
+                <input autoFocus={isOpen} className='searchfield' placeholder='Search on facebook'/>
             </div>
             : 
-            <img onMouseUp={open} class='circle1 canclick' src='https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/search-512.png'/>}
+            <BsSearch onMouseUp={open} size='40' className='canclick'/>
+            }
         </div>
     )
 }

@@ -24,7 +24,10 @@ export default function Login (props) {
     const onLogin = () => {
         Axios.post('http://localhost:3001/login', {id: loginid, pass: loginpassword})
         .then(res => {
-            if (res.data.length !==0) addinfotostate(addinfo(res.data[0]))
+            if (res.data.length !==0) {
+                addinfotostate(addinfo(res.data[0]))
+                localStorage.setItem('id', res.data[0].id)
+            }
             else alert('Sai ten dang nhap hoac mat khau')
         })
         

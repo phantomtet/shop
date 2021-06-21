@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-
+import {RiMenuFill} from 'react-icons/ri'
 export default function Menu (props) {
     const [isOpen, setOpen] = useState(false)
     
@@ -18,15 +18,14 @@ export default function Menu (props) {
         }
         else {
             setOpen(false)
-
             document.removeEventListener('mousedown', func)
         }
     }
     return (
         <div id='Menu' style={{margin: '0 2px 0 2px'}}>
-            <img onClick={open} style={{backgroundColor: isOpen ? 'green' : ''}} class='circle1 canclick' src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png'/>
+            <RiMenuFill size='40' className='canclick' onClick={open} style={{margin: '5px'}}/>
             {isOpen?
-            <div style={{backgroundColor: 'lightgreen', margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', border: '1px solid green'}}>
+            <div className='color3' style={{margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', border: '1px solid green'}}>
                 Under Construction  
             </div>
             :

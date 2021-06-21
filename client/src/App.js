@@ -1,13 +1,17 @@
-import { useSelector } from 'react-redux';
+import React from 'react'
+
 import './App.css';
-import Login from './components/Login'
+import Login2 from './components/Login2';
 import MainApp from './components/MainApp'
+import {auth} from './firebase'
+import {useAuthState} from 'react-firebase-hooks/auth'
+
 
 function App() {
-  const a = useSelector(state => state.clientinfo)
+  const [user] = useAuthState(auth)
   return (
-    <div className="App">
-      { a === '' ? <Login/> : <MainApp/> }
+    <div className="App color2">
+      { user ? <MainApp /> : <Login2 /> }
     </div>
   );
 }
