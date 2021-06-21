@@ -1,0 +1,121 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "createdAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "relateTo",
+          "arrayConfig": "CONTAINS"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "relateTo",
+          "arrayConfig": "CONTAINS"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "relateTo",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "relateTo",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "fileURL",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "relateTo",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "fileURL",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "relationship",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "follow",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "relationship",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "follow",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "relationship",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "relationship",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "relationship",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "friendSince",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
