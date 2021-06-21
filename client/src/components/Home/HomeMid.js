@@ -24,7 +24,7 @@ export default function HomeMid () {
         })
     },[])
     useEffect(() => {
-        console.log('change')
+        console.log('1')
     }, [userArray])
     return (
         <div className='mid' style={{minWidth: '500px', maxWidth: '680px'}}>
