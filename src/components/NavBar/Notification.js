@@ -63,7 +63,7 @@ function SingleList ({notiData}) {
     const [user] = useDocumentDataOnce(firestore.collection('users').doc(notiData.createdBy))
     if (user)
     return (
-        <Link to={`/${notiData.path.path}`}>
+        <Link to={`/${notiData.path}`}>
             <div className='canclick' style={{display: 'flex', padding: '5px'}}>
                 <img className='circle2' style={{marginRight: '10px'}} src={user && user.avatarURL}/>
                 <div style={{wordWrap: 'break-word', maxWidth: '100%'}}>

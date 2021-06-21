@@ -10,22 +10,13 @@ import { BiDislike, BiLike } from 'react-icons/bi'
 import { addNotify, timeFormat } from '../function'
 export default function HomeMid () {
     const client = useSelector(state => state.firebase.profile)
-    const [userArray, setUserArray] = useState([client.id])
-    const [posts] = useCollectionData(firestore.collection('posts').where('relateTo', 'array-contains-any', [...userArray, client.id]))
-    useEffect(() => {
-        // lay user id cua nhung nguoi minh follow
-        firestore.collection(`users/${client.id}/relationship`).where('follow', '==', true).where('id', 'not-in', userArray).limit(10).get()
-        .then(snapshot => {
-            let array = []
-            snapshot.docs.forEach(doc => {
-                array = array.concat(doc.data().id)
-            })
-            setUserArray(array)
-        })
-    },[])
-    useEffect(() => {
-        console.log('1')
-    }, [userArray])
+    const [numberOfPost, setNumberOfPost] = useState(14)
+    const [posts] = useCollectionData(firestore.collection('posts').orderBy('createdAt', 'desc').limit(numberOfPost))
+    
+    const handleScroll = () => {
+        
+    }
+    
     return (
         <div className='mid' style={{minWidth: '500px', maxWidth: '680px'}}>
             <NewPost/>
@@ -96,7 +87,7 @@ export function SinglePost ({data}) {
                 firestore.doc(data.path).update({numberOfComment: firebase.firestore.FieldValue.increment(1) })
                 addNotify(client.id, data.createdBy, {
                     createdAt: Date.now(),
-                    path: data.path,
+                    path: `posts/${data.id}`,
                     createdBy: client.id,
                     seen: false,
                     type: 'comment'
