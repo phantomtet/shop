@@ -13,7 +13,7 @@ const firebaseConfig2 = {
 };
 var firebaseConfig = {
   apiKey: "AIzaSyAlrl8oPDKTSxa64q5Q1cSD_j7f863kdZ0",
-  authDomain: "https://fakebook123.netlify.app",
+  authDomain: "fakebook2-1953a.firebaseapp.com",
   projectId: "fakebook2-1953a",
   storageBucket: "fakebook2-1953a.appspot.com",
   messagingSenderId: "224349683584",
