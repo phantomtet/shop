@@ -1,10 +1,24 @@
 import React, {useState, useEffect} from 'react'
-import { useCollectionData, useDocumentData, useDocumentDataOnce } from 'react-firebase-hooks/firestore'
+import { useCollectionData, useCollectionDataOnce, useDocumentData, useDocumentDataOnce } from 'react-firebase-hooks/firestore'
 import { auth, firestore, storage } from '../../firebase'
 import {useDispatch, useSelector} from 'react-redux'
 import {addOpen, removeCollapse} from '../../actions/chatlistAction'
 export default function HomeRight () {
     const client = useSelector(state => state.firebase.profile)
+    const [friends, setFriends] = useState([])
+    useEffect(() => {
+        if (client.id) {
+            firestore.collection(`users/${client.id}/relationship`).where('relationship', '==', 'friends').limit(30).get()
+            .then(docs => {
+                let array = []
+                docs.forEach(doc => {
+                    array = array.concat(doc.id)
+                })
+                setFriends(array)
+                console.log(array)
+            })
+        }
+    }, [client])
     return (
         <div className='color2 right' style={{position: 'sticky',top: '50px', right: '0', width: '360px', padding: '5px', height: '100%', color: 'whitesmoke'}}>
             <div className='' style={{padding: '15px 10px 0px 10px', display: 'flex', justifyContent: 'space-between'}}>
@@ -18,7 +32,7 @@ export default function HomeRight () {
                 </div>
             </div>
            
-            {client.friends && client.friends.map(data => <SingleContact client={client} key={data} data={data}/>)}
+            {friends && friends.map(data => <SingleContact client={client} key={data} data={data}/>)}
         </div>
     )
 }

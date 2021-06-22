@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
-import firebase, {auth, firestore, storage} from '../firebase'
+import  { firestore, } from '../firebase'
 import {useCollectionData, useCollectionDataOnce, useDocumentData, useDocumentDataOnce} from 'react-firebase-hooks/firestore'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {BsThreeDots} from 'react-icons/bs'
 import {addOpen, removeCollapse} from '../actions/chatlistAction'
 import {BsFillPersonCheckFill, BsXOctagon} from 'react-icons/bs'
 import { SinglePost } from './Home/HomeMid'
+import {TiTick, TiTimes} from 'react-icons/ti'
 import Tag from './Tag'
 export  default function Profile () {
     const { id } = useParams()
     const [opponents] = useDocumentDataOnce(firestore.collection('users').doc(id))
     const {path, url} = useRouteMatch()
     const [friends] = useCollectionData(firestore.collection(`users/${id}/relationship`).where('relationship', '==', 'friends'))
+    const [editTab, setEditTab] = useState('')
+    const [newName, setNewName] = useState('')
+    useEffect(() => {
+        switch (editTab) {
+            case 'name':
+                
+                return
+        }
+    }, [editTab])
     if (opponents)
     return ( 
         <div>
@@ -23,7 +32,17 @@ export  default function Profile () {
                 <img src='https://img.freepik.com/free-vector/abstract-banner-background-with-red-shapes_1361-3348.jpg?size=626&ext=jpg' style={{width: '960px', maxHeight: '348px', maxWidth: '100%'}}/>
                 <div style={{position: 'absolute', left: '50%', top: '90%', transform: 'translate(-50%, -50%)',}}>
                     <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>       
-                    <p style={{textAlign: 'center', fontSize: '32px',}}>{opponents.name}</p>
+                    {
+                    editTab !== 'name' ?
+                    <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}<span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span></p> :
+                    <div className='test' style={{display: 'flex'}}>
+                        <input maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
+                        <TiTick className='canclick' size='30' style={{margin: 'auto'}}/>
+                        <TiTimes onClick={() => set} className='canclick' size='30' style={{margin: 'auto'}}/>
+                    </div>
+                    }
+                    
+                    
                 </div>
             </div>
             <div style={{paddingTop: '100px'}}></div>

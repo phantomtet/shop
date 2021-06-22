@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector} from 'react-redux'
 import {auth} from '../../firebase'
 import {AiFillCaretDown} from 'react-icons/ai'
+import { Link } from 'react-router-dom'
 export default function AccountOption (props) { 
     const user = useSelector(state => state.firebase.profile)
     const [isOpen, setOpen] = useState(false)
@@ -95,13 +96,15 @@ export default function AccountOption (props) {
             <AiFillCaretDown size='40' className='canclick' onClick={open} style={{margin: '5px'}}/>
             { isOpen ? 
             <div className='color3' style={{margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', border: '1px solid gray'}}>
-                <div className='canclick' style={{display: 'flex', padding: '5px', borderBottom: '1px solid green'}}>
-                    <img className='circle2' src={user.avatarURL}/>
-                    <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
-                        {user ? <h3>{user.name}</h3> : 'NULL'}
-                        <p>See your profile</p>
+                <Link to={`/profile/${user.id}`}>
+                    <div className='canclick' style={{display: 'flex', padding: '5px', borderBottom: '1px solid green'}}>
+                        <img className='circle2' src={user.avatarURL}/>
+                        <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
+                            {user ? <h3>{user.name}</h3> : 'NULL'}
+                            <p>See your profile</p>
+                        </div>
                     </div>
-                </div>
+                </Link>
                 <div className='canclick' style={{margin: '5px 0',display: 'flex', padding: '5px', borderBottom: '1px solid green'}}>
                     <img className='circle0' src='https://i1.wp.com/southbroomhouse.com/wp-content/uploads/2020/02/exclamation-mark-symbol-computer-icons-circle-warning-sign-exclamation-mark-thumbnail.jpg'/>
                     <div style={{width: '100%', marginLeft: '5px', padding: '5px 5px 5px 5px'}}>
