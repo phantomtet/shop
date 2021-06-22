@@ -10,20 +10,36 @@ import {BsFillPersonCheckFill, BsXOctagon} from 'react-icons/bs'
 import { SinglePost } from './Home/HomeMid'
 import {TiTick, TiTimes} from 'react-icons/ti'
 import Tag from './Tag'
+import { BiCamera } from 'react-icons/bi'
 export  default function Profile () {
+    const client = useSelector(state => state.firebase.profile)
     const { id } = useParams()
-    const [opponents] = useDocumentDataOnce(firestore.collection('users').doc(id))
+    const [opponents] = useDocumentData(firestore.collection('users').doc(id))
     const {path, url} = useRouteMatch()
     const [friends] = useCollectionData(firestore.collection(`users/${id}/relationship`).where('relationship', '==', 'friends'))
     const [editTab, setEditTab] = useState('')
     const [newName, setNewName] = useState('')
-    useEffect(() => {
+    const [newAvatarURL, setAvatarURL] = useState('')
+    const handleEditSubmit = () => {
         switch (editTab) {
-            case 'name':
-                
-                return
+            case 'name': 
+                firestore.collection('users').doc(client.id).set({name: newName}, {merge: true})
+                setEditTab('')
+            case '':
+                firestore.collection('users').doc(client.id).set({avatarURL: newAvatarURL}, {merge: true})
+                setEditTab('')
         }
-    }, [editTab])
+    }
+    const checkValidFile = ({target}) => {
+        if (target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+            alert('File is too big or invalid file type')
+            target.value = ''
+        }
+        else {}
+    }
+    const triggerButton = () => {
+        document.getElementById('addfile').click()
+    }
     if (opponents)
     return ( 
         <div>
@@ -31,17 +47,20 @@ export  default function Profile () {
                 {/* background image */}
                 <img src='https://img.freepik.com/free-vector/abstract-banner-background-with-red-shapes_1361-3348.jpg?size=626&ext=jpg' style={{width: '960px', maxHeight: '348px', maxWidth: '100%'}}/>
                 <div style={{position: 'absolute', left: '50%', top: '90%', transform: 'translate(-50%, -50%)',}}>
-                    <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>       
-                    {
-                    editTab !== 'name' ?
-                    <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}<span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span></p> :
+                    <div className='test' style={{display: 'flex', position: 'relative'}}>
+                        <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>
+                        {client.id === opponents.id && <BiCamera onClick={triggerButton} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
+                        {/* hidden file input */}
+                        <input onChange={checkValidFile} id='addfile' type='file' style={{display: ''}} accept='.jpeg, .png'/>
+                    </div>       
+                    {editTab !== 'name' && <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}{client.id === opponents.id && <span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span>}</p>}
+                    { editTab === 'name' && client.id === opponents.id &&
                     <div className='test' style={{display: 'flex'}}>
-                        <input maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
-                        <TiTick className='canclick' size='30' style={{margin: 'auto'}}/>
-                        <TiTimes onClick={() => set} className='canclick' size='30' style={{margin: 'auto'}}/>
+                        <input value={newName} onChange={({target}) => setNewName(target.value)} maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
+                        <TiTick onClick={handleEditSubmit} className='canclick' size='30' style={{margin: 'auto'}}/>
+                        <TiTimes onClick={() => setEditTab('')} className='canclick' size='30' style={{margin: 'auto'}}/>
                     </div>
                     }
-                    
                     
                 </div>
             </div>
