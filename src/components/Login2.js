@@ -26,7 +26,10 @@ export default function Login2 () {
     }
     return (
         <div className='' style={{position: 'absolute', height: '100%', width: '100%', display: 'flex', justifyContent: 'center'}}>
-            <div className=' color3' style={{}}>
+            <div className=' color3' style={{position: 'relative', margin: 'auto', borderRadius: '10px'}}>
+                <div style={{fontWeight: 'bolder', fontSize: '25px', position: 'absolute', top: '-22px', left: '6px', color: '#66a5ad'}}>
+                    Fakebook
+                </div>
                 <div className='canclick' onClick={() => signin('google')} style={{display: 'flex'}}>
                     <FcGoogle size='30'/>
                     <div  style={{padding: '5px'}}>Sign in with Google Account</div>
@@ -36,6 +39,7 @@ export default function Login2 () {
                     <div  style={{padding: '5px'}}>Sign in with Facebook Account</div>
                 </div>
             </div>
+            
         </div>
     )
 }

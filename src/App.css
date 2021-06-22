@@ -18,17 +18,16 @@ input {
     display: flex;
     justify-content: space-between;
 }
-button:hover {
-    cursor: pointer;
-    background-color: green;
-}
+
 input {
     border-radius: 7px;
 }
 .canclick {
     transition: background-color 0.25s;
+    border-radius: 10px;
 }
 .canclick:hover {
+    border-radius: 10px;
     cursor: pointer;
     background-color: rgba(128, 128, 128, 0.432);
 }
