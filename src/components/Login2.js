@@ -23,7 +23,7 @@ export default function Login2 () {
         })
     }
     return (
-        <div>
+        <div className='test'>
             <button onClick={signin}>Log in</button>
         </div>
     )
