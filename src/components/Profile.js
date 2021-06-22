@@ -20,18 +20,15 @@ export  default function Profile () {
     const [friends] = useCollectionData(firestore.collection(`users/${id}/relationship`).where('relationship', '==', 'friends'))
     const [editTab, setEditTab] = useState('')
     const [newName, setNewName] = useState('')
-    const [newAvatarURL, setAvatarURL] = useState('')
     const handleEditSubmit = () => {
         switch (editTab) {
             case 'name': 
                 firestore.collection('users').doc(client.id).set({name: newName}, {merge: true})
                 setEditTab('')
-            case '':
-                firestore.collection('users').doc(client.id).set({avatarURL: newAvatarURL}, {merge: true})
-                setEditTab('')
+            
         }
     }
-    const checkValidFile = ({target}) => {
+    const checkValidAvatar = ({target}) => {
         if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
             alert('File is too big or invalid file type')
             target.value = ''
@@ -42,81 +39,102 @@ export  default function Profile () {
             .then(snapshot => snapshot.ref.getDownloadURL().then(url => firestore.doc(`users/${client.id}`).set({avatarURL: url}, {merge: true})))
         }
     }
-    const triggerButton = () => {
-        document.getElementById('addfile').click()
+    const checkValidBackground = ({target}) => {
+        if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+            alert('File is too big or invalid file type')
+            target.value = ''
+        }
+        else {
+            const id = v4()
+            storage.ref(`photo/${client.id}/${id}`).put(target.files[0])
+            .then(snapshot => snapshot.ref.getDownloadURL().then(url => firestore.doc(`users/${client.id}`).set({backgroundURL: url}, {merge: true})))
+        }
     }
     if (opponents)
     return ( 
-        <div>
-            <div style={{display: 'flex', justifyContent: 'center', position: 'relative',}}>
-                {/* background image */}
-                <img src='https://img.freepik.com/free-vector/abstract-banner-background-with-red-shapes_1361-3348.jpg?size=626&ext=jpg' style={{width: '960px', maxHeight: '348px', maxWidth: '100%'}}/>
-                <div style={{position: 'absolute', left: '50%', top: '90%', transform: 'translate(-50%, -50%)',}}>
-                    <div className='test' style={{display: 'flex', position: 'relative'}}>
-                        <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>
-                        {client.id === opponents.id && <BiCamera onClick={triggerButton} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
-                        {/* hidden file input */}
-                        <input onChange={checkValidFile} id='addfile' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>
-                    </div>       
-                    {editTab !== 'name' && <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}{client.id === opponents.id && <span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span>}</p>}
-                    { editTab === 'name' && client.id === opponents.id &&
-                    <div className='test' style={{display: 'flex'}}>
-                        <input value={newName} onChange={({target}) => setNewName(target.value)} maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
-                        <TiTick onClick={handleEditSubmit} className='canclick' size='30' style={{margin: 'auto'}}/>
-                        <TiTimes onClick={() => setEditTab('')} className='canclick' size='30' style={{margin: 'auto'}}/>
-                    </div>
-                    }
+        // <div>
+        //     <div className='test' style={{ position: 'relative', maxWidth: '960px', margin: 'auto', maxHeight: '348px'}}>
+        //             {/* background image */}
+        //             <div style={{ position: 'relative', width: '100%', height: 'auto'}}>
+        //                 <img className='test' src={opponents.avatarURL} style={{width: '100%' , objectFit: 'cover'}}/>
+        //                 {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
+        //                 <input onChange={checkValidBackground} id='inputBackground' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>          
+        //             </div>
+        //         <div style={{position: 'absolute', left: '50%', top: '90%', transform: 'translate(-50%, -50%)',}}>
+        //             {/* avatar */}
+        //             <div style={{display: 'flex', position: 'relative'}}>
+        //                 <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>
+        //                 {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
+        //                 {/* hidden file input */}
+        //                 <input onChange={checkValidAvatar} id='inputAvatar' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>
+        //             </div>       
+        //             {editTab !== 'name' && <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}{client.id === opponents.id && <span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span>}</p>}
+        //             { editTab === 'name' && client.id === opponents.id &&
+        //             <div style={{display: 'flex'}}>
+        //                 <input value={newName} onChange={({target}) => setNewName(target.value)} maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
+        //                 <TiTick onClick={handleEditSubmit} className='canclick' size='30' style={{margin: 'auto'}}/>
+        //                 <TiTimes onClick={() => setEditTab('')} className='canclick' size='30' style={{margin: 'auto'}}/>
+        //             </div>
+        //             }
                     
+        //         </div>
+        //     </div>
+        //     <div style={{paddingTop: '100px'}}></div>
+        //     <div style={{position: 'sticky', top: '50px', display: 'flex', justifyContent: 'center'}}>
+        //         <div style={{display: 'flex', justifyContent: 'space-between', width: '960px', borderTop: '1px solid gray'}}>
+        //             <div style={{display: 'flex'}}>
+        //                 <Link to={`${url}`}>
+        //                     <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+        //                         Posts
+        //                     </div>
+        //                 </Link>
+        //                 <Link to ={`${url}/about`}>
+        //                     <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+        //                         About
+        //                     </div>
+        //                 </Link>
+        //                 <Link to={`${url}/friends`}>
+        //                     <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
+        //                         <div style={{marginRight: '5px'}}>Friends</div>
+        //                         <div>
+        //                             {friends && <div>{friends.length}</div>}
+        //                         </div>
+        //                     </div>
+        //                 </Link>
+        //                 <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+        //                     Photos
+        //                 </div>
+        //                 <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+        //                     Videos
+        //                 </div>
+        //             </div>
+        //             <div classNameName='test' style={{width: '300px', display: 'flex', paddingTop: '15px'}}>
+        //                 <AddFriendButton id={id} />
+        //                 <MessageButton id={id}/>
+        //                 <AdvanceOptions/>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className='test2' style={{width: '945px', margin: 'auto'}}>
+        //         <Switch>
+        //             <Route exact path={`${url}`}>
+        //                 <Posts opponents={opponents} friends={friends}/>
+        //             </Route>
+        //             <Route path={`${url}/about`}>
+        //                 Under construction
+        //             </Route>
+        //             <Route path={`${url}/friends`}>
+        //                 <FriendList opponents={opponents}/>
+        //             </Route>
+        //         </Switch>
+        //     </div>
+        // </div>
+        <div>
+            {/* header */}
+            <div className='test2'>
+                <div className='test' style={{maxWidth: '960px', margin: 'auto',}}>
+                    <img style={{maxHeight: '348px', width: '100%', objectFit: 'cover'}} src={opponents.avatarURL}/>
                 </div>
-            </div>
-            <div style={{paddingTop: '100px'}}></div>
-            <div style={{position: 'sticky', top: '50px', display: 'flex', justifyContent: 'center'}}>
-                <div style={{display: 'flex', justifyContent: 'space-between', width: '960px', borderTop: '1px solid gray'}}>
-                    <div style={{display: 'flex'}}>
-                        <Link to={`${url}`}>
-                            <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-                                Posts
-                            </div>
-                        </Link>
-                        <Link to ={`${url}/about`}>
-                            <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-                                About
-                            </div>
-                        </Link>
-                        <Link to={`${url}/friends`}>
-                            <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
-                                <div style={{marginRight: '5px'}}>Friends</div>
-                                <div>
-                                    {friends && <div>{friends.length}</div>}
-                                </div>
-                            </div>
-                        </Link>
-                        <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-                            Photos
-                        </div>
-                        <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-                            Videos
-                        </div>
-                    </div>
-                    <div classNameName='test' style={{width: '300px', display: 'flex', paddingTop: '15px'}}>
-                        <AddFriendButton id={id} />
-                        <MessageButton id={id}/>
-                        <AdvanceOptions/>
-                    </div>
-                </div>
-            </div>
-            <div className='test2' style={{width: '945px', margin: 'auto'}}>
-                <Switch>
-                    <Route exact path={`${url}`}>
-                        <Posts opponents={opponents} friends={friends}/>
-                    </Route>
-                    <Route path={`${url}/about`}>
-                        Under construction
-                    </Route>
-                    <Route path={`${url}/friends`}>
-                        <FriendList opponents={opponents}/>
-                    </Route>
-                </Switch>
             </div>
         </div>
     )
