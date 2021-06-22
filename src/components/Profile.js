@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
-import  { firestore, } from '../firebase'
+import  { firestore, storage, } from '../firebase'
 import {useCollectionData, useCollectionDataOnce, useDocumentData, useDocumentDataOnce} from 'react-firebase-hooks/firestore'
 import {Link} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,6 +11,7 @@ import { SinglePost } from './Home/HomeMid'
 import {TiTick, TiTimes} from 'react-icons/ti'
 import Tag from './Tag'
 import { BiCamera } from 'react-icons/bi'
+import { v4 } from 'uuid'
 export  default function Profile () {
     const client = useSelector(state => state.firebase.profile)
     const { id } = useParams()
@@ -31,11 +32,15 @@ export  default function Profile () {
         }
     }
     const checkValidFile = ({target}) => {
-        if (target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+        if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
             alert('File is too big or invalid file type')
             target.value = ''
         }
-        else {}
+        else {
+            const id = v4()
+            storage.ref(`photo/${client.id}/${id}`).put(target.files[0])
+            .then(snapshot => snapshot.ref.getDownloadURL().then(url => firestore.doc(`users/${client.id}`).set({avatarURL: url}, {merge: true})))
+        }
     }
     const triggerButton = () => {
         document.getElementById('addfile').click()
@@ -51,7 +56,7 @@ export  default function Profile () {
                         <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>
                         {client.id === opponents.id && <BiCamera onClick={triggerButton} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
                         {/* hidden file input */}
-                        <input onChange={checkValidFile} id='addfile' type='file' style={{display: ''}} accept='.jpeg, .png'/>
+                        <input onChange={checkValidFile} id='addfile' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>
                     </div>       
                     {editTab !== 'name' && <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}{client.id === opponents.id && <span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span>}</p>}
                     { editTab === 'name' && client.id === opponents.id &&

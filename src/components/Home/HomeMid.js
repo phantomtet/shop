@@ -194,7 +194,11 @@ export function NewPost() {
         setText(target.value)
     }
     const handleFileInput = ({target}) => {
-        setFile(target.files[0])
+        if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+            alert('File is too big or invalid file type')
+            target.value = ''
+        }
+        else setFile(target.files[0])
     }
     const addfile = () => {
         document.getElementById('addfilebutton').click()
@@ -217,8 +221,8 @@ export function NewPost() {
             if (file) {
                 const id = v4()
                 storage.ref(`photo/${client.id}/${id}`).put(file)
-                .then(() =>
-                    storage.ref(`photo/${client.id}/${id}`).getDownloadURL().then(url => newDoc.update({fileURL: url}))
+                .then(snapshot =>
+                    snapshot.ref.getDownloadURL().then(url => newDoc.update({fileURL: url}))
                 )      
             }        
             setText('')
@@ -243,7 +247,7 @@ export function NewPost() {
                     <div style={{padding: '3px 0 0 5px'}}>Live Video</div>
                 </div>
                     <div onClick={addfile} className=' canclick' style={{width: '100%',  display: 'flex', padding: '8px', justifyContent: 'center'}}>
-                        <input onChange={handleFileInput} id='addfilebutton' type='file' style={{display: 'none'}}/>
+                        <input onChange={handleFileInput} id='addfilebutton' type='file' accept='.jpeg, .png' style={{display: 'none'}}/>
                         <FcGallery size='24'/>
                         <div style={{padding: '3px 0 0 5px'}}>Photo/Video</div>
                     </div>
