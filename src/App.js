@@ -10,7 +10,7 @@ import {useAuthState} from 'react-firebase-hooks/auth'
 function App() {
   const [user] = useAuthState(auth)
   return (
-    <div className="App color2">
+    <div className="color2"  style={{}}>
       { user ? <MainApp /> : <Login2 /> }
     </div>
   );

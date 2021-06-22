@@ -2,12 +2,14 @@ import React from 'react'
 
 import { firestore } from '../firebase'
 import { useFirebase } from 'react-redux-firebase'
+import {FcGoogle,} from 'react-icons/fc'
+import {FaFacebook} from 'react-icons/fa'
 
 export default function Login2 () {
     const firebase = useFirebase()
-    const signin = () => {
+    const signin = (provider) => {
         firebase.login({
-            provider: 'google',
+            provider: provider,
             type: 'popup'
         })
         .then(result => {
@@ -23,8 +25,17 @@ export default function Login2 () {
         })
     }
     return (
-        <div className='test'>
-            <button onClick={signin}>Log in</button>
+        <div className='' style={{position: 'absolute', height: '100%', width: '100%', display: 'flex', justifyContent: 'center'}}>
+            <div className=' color3' style={{}}>
+                <div className='canclick' onClick={() => signin('google')} style={{display: 'flex'}}>
+                    <FcGoogle size='30'/>
+                    <div  style={{padding: '5px'}}>Sign in with Google Account</div>
+                </div>
+                <div title="Not working yet" className='cantclick' style={{display: 'flex'}}>
+                    <FaFacebook size='30'/>
+                    <div  style={{padding: '5px'}}>Sign in with Facebook Account</div>
+                </div>
+            </div>
         </div>
     )
 }

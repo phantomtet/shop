@@ -144,7 +144,9 @@ input {
     background: #003b46; 
     display: block;
 }
-
+html {
+    background-color: #07575b;
+}
 @media only screen and (max-width: 1100px) {
     .left {
         display: none;
