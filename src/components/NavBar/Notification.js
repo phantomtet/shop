@@ -10,7 +10,7 @@ export default function Notification () {
     const client = useSelector(state => state.firebase.profile)
     const [isOpen, setOpen] = useState(false)
     const [numberOfList, setNumberOfList] = useState(14)
-    useFirestoreConnect(client.id && [{collection: 'users', doc: client.id, subcollections: [{collection: 'notification', limit: numberOfList, orderBy: 'createdAt'}], storeAs: 'notification'}], )
+    useFirestoreConnect(client.id && [{collection: 'users', doc: client.id, subcollections: [{collection: 'notification', limit: numberOfList, orderBy: ['createdAt', 'desc'] }], storeAs: 'notification'}], )
     const list = useSelector(state => state.firestore.ordered.notification)
     const func = (target) => {
         if (!document.getElementById('Notification')) {document.removeEventListener('mousedown', func); return}
@@ -67,7 +67,7 @@ function SingleList ({notiData}) {
             <div className='canclick' style={{display: 'flex', padding: '5px'}}>
                 <img className='circle2' style={{marginRight: '10px'}} src={user && user.avatarURL}/>
                 <div style={{wordWrap: 'break-word', maxWidth: '100%'}}>
-                    {user && `${user.name} do something on the post`}
+                    {user && `${user.name} ${notiData.text}`}
                 </div>
             </div>
         </Link>

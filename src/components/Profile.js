@@ -13,6 +13,7 @@ import Tag from './Tag'
 import { BiCamera, BiCaretDown, BiMessageDetail } from 'react-icons/bi'
 import { RiUserAddFill } from 'react-icons/ri'
 import { v4 } from 'uuid'
+import { addNotify } from './function'
 export  default function Profile () {
     const client = useSelector(state => state.firebase.profile)
     const { id } = useParams()
@@ -73,10 +74,13 @@ export  default function Profile () {
                         {/* background  */}
                         <img style={{position: 'absolute', width: '100%', height: '100%', objectFit: 'cover'}} src={opponents.backgroundURL || opponents.avatarURL}/>
                         {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputBackground').click()} title='Edit your background' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0}}/>}
-                        <input onChange={checkValidBackground} id='inputBackground' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>
+                        <input onChange={checkValidBackground} id='inputBackground' type='file' style={{display: 'none'}} accept='.jpeg, .png, .jpg'/>
                     </div>
                     <div style={{position: 'absolute', left: '50%', top: '90%', display: 'flex', transform: 'translate(-50%, -50%)'}}>
+                        {/* avatar */}
                         <img className='circle3' style={{ objectFit: 'cover'}} src={opponents.avatarURL}/>
+                        {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0}}/>}
+                        <input onChange={checkValidAvatar} id='inputAvatar' type='file' style={{display: 'none'}} accept='.jpeg, .png, .jpg'/>
                     </div>
                 </div>
                 <div style={{display: 'flex', justifyContent: 'center', padding: '60px 0 0 0', maxWidth: '960px', margin: 'auto'}}>
@@ -315,7 +319,12 @@ export function AddFriendButton (props) {
         firestore.doc(`users/${client.id}/relationship/${props.id}`).set({follow: true, relationship: 'sent', id: props.id}, {merge: true})
         firestore.doc(`users/${props.id}/relationship/${client.id}`).set({relationship: 'receive', id: client.id}, {merge: true})
         //trigger a notify
-        
+        addNotify(client.id, props.id, {
+            text: 'sent you a friend request',
+            path: `profile/${client.id}`,
+            createdAt: Date.now(),
+            createdBy: client.id
+        })
     }
     const cancelfriendrequest = () => {
         firestore.doc(`users/${client.id}/relationship/${props.id}`).set({follow: false, relationship: ''}, {merge: true})

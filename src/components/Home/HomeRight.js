@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { useCollectionData, useCollectionDataOnce, useDocumentData, useDocumentDataOnce } from 'react-firebase-hooks/firestore'
-import { auth, firestore, storage } from '../../firebase'
+import { useDocumentDataOnce } from 'react-firebase-hooks/firestore'
+import { firestore } from '../../firebase'
 import {useDispatch, useSelector} from 'react-redux'
 import {addOpen, removeCollapse} from '../../actions/chatlistAction'
 export default function HomeRight () {
@@ -15,7 +15,6 @@ export default function HomeRight () {
                     array = array.concat(doc.id)
                 })
                 setFriends(array)
-                console.log(array)
             })
         }
     }, [client])

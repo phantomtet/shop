@@ -117,6 +117,9 @@ input {
 .color4 {
     background-color: #c4dfe6;
 }
+.color5 {
+    background-color: #00ccff;
+}
 #NavMid {
     width: 680px;
     display: flex;

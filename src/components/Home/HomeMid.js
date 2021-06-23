@@ -89,8 +89,7 @@ export function SinglePost ({data}) {
                     createdAt: Date.now(),
                     path: `posts/${data.id}`,
                     createdBy: client.id,
-                    seen: false,
-                    type: 'comment'
+                    text: 'comment on your post'
                 })
                 
                 setComment('')
