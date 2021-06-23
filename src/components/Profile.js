@@ -10,7 +10,8 @@ import {BsFillPersonCheckFill, BsXOctagon} from 'react-icons/bs'
 import { SinglePost } from './Home/HomeMid'
 import {TiTick, TiTimes} from 'react-icons/ti'
 import Tag from './Tag'
-import { BiCamera } from 'react-icons/bi'
+import { BiCamera, BiCaretDown, BiMessageDetail } from 'react-icons/bi'
+import { RiUserAddFill } from 'react-icons/ri'
 import { v4 } from 'uuid'
 export  default function Profile () {
     const client = useSelector(state => state.firebase.profile)
@@ -20,6 +21,18 @@ export  default function Profile () {
     const [friends] = useCollectionData(firestore.collection(`users/${id}/relationship`).where('relationship', '==', 'friends'))
     const [editTab, setEditTab] = useState('')
     const [newName, setNewName] = useState('')
+    const [openTab, setOpenTab] = useState('')
+    useEffect(() => {
+        if (openTab) {
+            const func = (e) => {
+                if (!document.getElementById(openTab).contains(e.target)) setOpenTab('')
+            }
+            document.addEventListener('mousedown', func)
+            return () => document.removeEventListener('mousedown', func)
+        }
+        else return
+    }, [openTab])
+
     const handleEditSubmit = () => {
         switch (editTab) {
             case 'name': 
@@ -52,90 +65,132 @@ export  default function Profile () {
     }
     if (opponents)
     return ( 
-        // <div>
-        //     <div className='test' style={{ position: 'relative', maxWidth: '960px', margin: 'auto', maxHeight: '348px'}}>
-        //             {/* background image */}
-        //             <div style={{ position: 'relative', width: '100%', height: 'auto'}}>
-        //                 <img className='test' src={opponents.avatarURL} style={{width: '100%' , objectFit: 'cover'}}/>
-        //                 {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
-        //                 <input onChange={checkValidBackground} id='inputBackground' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>          
-        //             </div>
-        //         <div style={{position: 'absolute', left: '50%', top: '90%', transform: 'translate(-50%, -50%)',}}>
-        //             {/* avatar */}
-        //             <div style={{display: 'flex', position: 'relative'}}>
-        //                 <img style={{display: 'block', margin: 'auto auto auto auto'}} className='circle3' src={opponents.avatarURL}/>
-        //                 {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', left: '65%', bottom: '8%'}}/>}
-        //                 {/* hidden file input */}
-        //                 <input onChange={checkValidAvatar} id='inputAvatar' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>
-        //             </div>       
-        //             {editTab !== 'name' && <p style={{textAlign: 'center', fontSize: '40px',}}>{opponents.name}{client.id === opponents.id && <span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', margin: '0 10px', position: '', }}>Edit</span>}</p>}
-        //             { editTab === 'name' && client.id === opponents.id &&
-        //             <div style={{display: 'flex'}}>
-        //                 <input value={newName} onChange={({target}) => setNewName(target.value)} maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
-        //                 <TiTick onClick={handleEditSubmit} className='canclick' size='30' style={{margin: 'auto'}}/>
-        //                 <TiTimes onClick={() => setEditTab('')} className='canclick' size='30' style={{margin: 'auto'}}/>
-        //             </div>
-        //             }
-                    
-        //         </div>
-        //     </div>
-        //     <div style={{paddingTop: '100px'}}></div>
-        //     <div style={{position: 'sticky', top: '50px', display: 'flex', justifyContent: 'center'}}>
-        //         <div style={{display: 'flex', justifyContent: 'space-between', width: '960px', borderTop: '1px solid gray'}}>
-        //             <div style={{display: 'flex'}}>
-        //                 <Link to={`${url}`}>
-        //                     <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-        //                         Posts
-        //                     </div>
-        //                 </Link>
-        //                 <Link to ={`${url}/about`}>
-        //                     <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-        //                         About
-        //                     </div>
-        //                 </Link>
-        //                 <Link to={`${url}/friends`}>
-        //                     <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
-        //                         <div style={{marginRight: '5px'}}>Friends</div>
-        //                         <div>
-        //                             {friends && <div>{friends.length}</div>}
-        //                         </div>
-        //                     </div>
-        //                 </Link>
-        //                 <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-        //                     Photos
-        //                 </div>
-        //                 <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
-        //                     Videos
-        //                 </div>
-        //             </div>
-        //             <div classNameName='test' style={{width: '300px', display: 'flex', paddingTop: '15px'}}>
-        //                 <AddFriendButton id={id} />
-        //                 <MessageButton id={id}/>
-        //                 <AdvanceOptions/>
-        //             </div>
-        //         </div>
-        //     </div>
-        //     <div className='test2' style={{width: '945px', margin: 'auto'}}>
-        //         <Switch>
-        //             <Route exact path={`${url}`}>
-        //                 <Posts opponents={opponents} friends={friends}/>
-        //             </Route>
-        //             <Route path={`${url}/about`}>
-        //                 Under construction
-        //             </Route>
-        //             <Route path={`${url}/friends`}>
-        //                 <FriendList opponents={opponents}/>
-        //             </Route>
-        //         </Switch>
-        //     </div>
-        // </div>
         <div>
             {/* header */}
-            <div className='test2'>
-                <div className='test' style={{maxWidth: '960px', margin: 'auto',}}>
-                    <img style={{maxHeight: '348px', width: '100%', objectFit: 'cover'}} src={opponents.avatarURL}/>
+            <div className='color3' style={{}}>
+                <div style={{maxWidth: '960px', margin: 'auto', position: 'relative'}}>
+                    <div style={{paddingBottom: '37%', position: 'relative'}}>
+                        {/* background  */}
+                        <img style={{position: 'absolute', width: '100%', height: '100%', objectFit: 'cover'}} src={opponents.backgroundURL || opponents.avatarURL}/>
+                        {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputBackground').click()} title='Edit your background' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0}}/>}
+                        <input onChange={checkValidBackground} id='inputBackground' type='file' style={{display: 'none'}} accept='.jpeg, .png'/>
+                    </div>
+                    <div style={{position: 'absolute', left: '50%', top: '90%', display: 'flex', transform: 'translate(-50%, -50%)'}}>
+                        <img className='circle3' style={{ objectFit: 'cover'}} src={opponents.avatarURL}/>
+                    </div>
                 </div>
+                <div style={{display: 'flex', justifyContent: 'center', padding: '60px 0 0 0', maxWidth: '960px', margin: 'auto'}}>
+                    <div style={{fontSize: '40px'}}>
+                        { editTab !== 'name' &&
+                            <div>
+                                {opponents.name}
+                                { client.id === opponents.id &&
+                                    <span onClick={() => setEditTab('name')} className='canclick2' title='Edit your profile name' style={{fontSize: '15px', position: 'absolute', }}>Edit</span>}
+                            </div>}
+                        { editTab === 'name' && client.id === opponents.id &&
+                        <div style={{display: 'flex'}}>
+                            <input value={newName} onChange={({target}) => setNewName(target.value)} maxLength='22' style={{ fontSize: '30px'}} placeholder='New name'/>
+                            { newName &&
+                                <TiTick onClick={handleEditSubmit} className='canclick' size='30' style={{margin: 'auto'}}/>}
+                            <TiTimes onClick={() => setEditTab('')} className='canclick' size='30' style={{margin: 'auto'}}/>
+                        </div>}
+                    </div>
+                </div>
+            
             </div>
+            
+            {/* sticky navigatebar div */}
+            <div className='color3' style={{zIndex: '2', position: 'sticky', top: '50px'}}>
+                <div style={{maxWidth: '960px', margin: 'auto', padding: '0 10px'}}>   
+                    <div style={{display: 'flex', justifyContent: 'space-between', width: '100%', borderTop: '1px solid gray'}}>
+                        <div style={{display: 'flex'}}>
+                            <Link to={`${url}`}>
+                                <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+                                    Posts
+                                </div>
+                            </Link>
+                            <Link className='collapse730' to ={`${url}/about`}>
+                                <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+                                    About
+                                </div>
+                            </Link>
+                            <Link className='collapse730' to={`${url}/friends`}>
+                                <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
+                                    <div style={{marginRight: '5px'}}>Friends</div>
+                                    <div>
+                                        {friends && <div>{friends.length}</div>}
+                                    </div>
+                                </div>
+                            </Link>
+                            <Link className='collapse730'>
+                                <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+                                    Photos
+                                </div>
+                            </Link>
+                            <div onClick={() => setOpenTab('adv')} className='canclick' style={{position: 'relative',height: '60px', padding: '20px 16px 20px 16px', display: 'flex'}}>
+                                More <BiCaretDown />
+                                { openTab === 'adv' &&
+                                    <div id='adv' className='color3' style={{ border: '1px solid blue', maxHeight: '300px', overflow: 'auto', position: 'absolute', left: '85px', minWidth: '150px'}}>
+                                    <Link to={`${url}`}>
+                                        <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+                                            Posts
+                                        </div>
+                                    </Link>
+                                    <Link to ={`${url}/about`}>
+                                        <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
+                                            About
+                                        </div>
+                                    </Link>
+                                    <Link to={`${url}/friends`}>
+                                        <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
+                                            <div style={{marginRight: '5px'}}>Friends</div>
+                                            <div>
+                                                {friends && <div>{friends.length}</div>}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                    <Link to={`${url}/photos`}>
+                                        <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
+                                            <div style={{marginRight: '5px'}}>Photos</div>
+                                        </div>
+                                    </Link>
+                                    <Link to={`${url}/videos`}>
+                                        <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
+                                            <div style={{marginRight: '5px'}}>Videos</div>
+                                        </div>
+                                    </Link>
+                                    <Link to={`${url}/checkin`}>
+                                        <div className='canclick' style={{display: 'flex', height: '60px', padding: '20px 16px 20px 16px'}}>
+                                            <div style={{marginRight: '5px'}}>Check-ins</div>
+                                        </div>
+                                    </Link>
+                                </div>}
+                            </div>
+                        </div>
+                        <div style={{width: '300px', display: 'flex', paddingTop: '15px'}}>
+                            <AddFriendButton id={id} />
+                            <MessageButton id={id}/>
+                            <AdvanceOptions/>
+                        </div>
+                    </div>
+                </div>
+                </div> 
+            
+            {/* main  */}
+            <div style={{maxWidth: '960px', margin: 'auto', padding: '0 10px'}}>
+                <Switch>
+                    <Route exact path={`${url}`}>
+                        <Posts opponents={opponents} friends={friends}/>
+                    </Route>
+                    <Route path={`${url}/about`}>
+                        Under construction
+                    </Route>
+                    <Route path={`${url}/friends`}>
+                        <FriendList opponents={opponents}/>
+                    </Route>
+                </Switch>
+            </div>
+        
         </div>
     )
     else return "This Page Isn't Available"
@@ -144,25 +199,27 @@ function Posts ({opponents, friends}) {
     const [posts] = useCollectionData(firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id))
     const [postsWithPhoto] = useCollectionDataOnce(firestore.collection(`posts`).orderBy('fileURL').orderBy('createdAt', 'desc').where('relateTo', 'array-contains', opponents.id).where('fileURL', '!=', '').limit(9))
     return (
-        <div style={{display: 'flex', justifyContent: 'center'}}>    
-            <div className='test' style={{width: '400px', marginTop: '15px'}}>      
-                <div style={{padding: '0 16px 0 16px', backgroundColor: 'lightgray', marginBottom: '15px'}} >  
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>    
+            <div className='collapse1000' style={{width: '400px', margin: '15px'}}>      
+                <div className='color3' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px'}} >  
                     <div style={{fontWeight: 'bold', padding: '20px 0 4px'}}>Intro</div>
                     <div>{opponents.intro ? opponents.intro : 'No information given'}</div>
                 </div>
-                <div style={{padding: '0 16px 0 16px', backgroundColor: 'lightgray', marginBottom: '15px', }}>  
+                <div className='color3' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px' }}>  
                     <div style={{fontWeight: 'bold', padding: '20px 0 4px'}}>Photos</div>
-                    <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px'}}>{postsWithPhoto && postsWithPhoto.map(data => data.fileURL && <Link to={`/${data.path}`}><img key={data.id} src={data.fileURL} style={{objectFit: 'cover', minWidth: '30%', width: '100px', height: '100px', margin: 'auto'}}/></Link>)}</div>
+                    <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px'}}>
+                        {postsWithPhoto && postsWithPhoto.map(data => data.fileURL && <Link to={`/${data.path}`}><img key={data.id} src={data.fileURL} style={{minWidth: '30%', width: '100px', height: '100px', margin: 'auto'}}/></Link>)}
+                    </div>
                 </div>
-                <div style={{padding: '16px', backgroundColor: 'lightgray', marginBottom: '15px'}}>  
+                <div className='color3' style={{padding: '16px', marginBottom: '15px', borderRadius: '10px'}}>  
                     <div style={{fontWeight: 'bold'}}>Friends</div>
-                    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+                    <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px',}}>
                         {friends && friends.map(val => <SingleFriend key={val.id} id={val.id}/>)}
                     </div>
                 </div>
             </div>
             {/* owner posts */}
-            <div className='test' style={{width: '545px', margin: '15px 0 0 15px'}}>                   {/*right div */}              
+            <div style={{ margin: '15px auto'}}>                   {/*right div */}              
                 {posts && posts.map(data => <SinglePost key={data.id} data={data}/>)}
             </div>
         </div>
@@ -171,10 +228,10 @@ function Posts ({opponents, friends}) {
 function SingleFriend ({id}) {
     const [user] = useDocumentData(firestore.collection('users').doc(id))
     return (
-        <div className='canclick3 test' style={{width: '30%', height: 'auto'}}>
+        <div className='canclick3' style={{minWidth: '30%', height: 'auto',}}>
             <Link to={'/profile/' + id}>
-                <img style={{maxWidth: '100%', height: 'auto'}} src={user && user.avatarURL}/>
-                <div style={{maxWidth: '100%', overflow: 'hidden'}}>
+                <img style={{width: '90px', height: '90px'}} src={user && user.avatarURL}/>
+                <div style={{width: '90px', overflow: 'hidden'}}>
                     {user && user.name}
                 </div>
             </Link>
@@ -247,8 +304,9 @@ function FriendList ({opponents}) {
 export function AddFriendButton (props) {
     const client = useSelector(state => state.firebase.profile)
     const [relation] = useDocumentData(firestore.doc(`users/${client.id}/relationship/${props.id}`))
-    const [relationship, setRelationship] = useState('')
+    const [relationship, setRelationship] = useState('yourself')
     useEffect(() => {
+        if (client.id === props.id) return
         if (relation) {
             setRelationship(relation.relationship)
         }   
@@ -280,8 +338,8 @@ export function AddFriendButton (props) {
     case '': 
         return (
             <div onClick={sentfriendrequest} className='canclick color4' style={{fontSize: '18px', justifyContent: 'center', width: '100%', minWidth: '140px', display: 'flex', height: '36px', padding: '7px 12px 7px 12px', borderRadius: '10px'}}>
-                <img style={{position: 'relative', top: '-5px', left: '-5px', height: '30px', width: '30px'}} src='https://cdn0.iconfinder.com/data/icons/social-media-glyph-1/64/Facebook_Social_Media_User_Interface-35-512.png'/>
-                <p>Add Friend</p>
+                <RiUserAddFill size='20' />
+                <p >Add Friend</p>
             </div>
         )
     case 'friends': 
@@ -310,7 +368,7 @@ export function AddFriendButton (props) {
                 </div>
             </div>
         )
-    default:
+    case 'yourself':
         return '' 
     }
 }
@@ -325,7 +383,7 @@ export function MessageButton ({id}) {
     }
     return (
         <div onClick={handleClick} className='canclick color4' style={{justifyContent: 'center', width: '100%', display: 'flex', height: '36px', padding: '7px 12px 7px 12px', borderRadius: '10px', margin: '0 4px'}}>
-            <img style={{position: 'relative', top: '-5px', left: '-5px', height: '30px', width: '30px'}} src='https://i.pinimg.com/originals/7b/7b/c6/7b7bc658d3fce83780679e84dc62f2fa.png'/>
+            <BiMessageDetail size='20' color='green' />
             <p>Message</p>
         </div>
     )

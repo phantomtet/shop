@@ -4,10 +4,9 @@
     text-decoration: none;
     color: inherit;
 }
-/* img {
-    max-width: 100%;
-    height: auto;
-} */
+img {
+    object-fit: cover;
+}
 input {
     outline: none;
     padding-left: 10px;
@@ -174,4 +173,7 @@ html {
 }
 @media only screen and (max-width: 730px) {
     #NavMid {display: none}
+    .collapse730 {
+        display: none;
+    }
 }

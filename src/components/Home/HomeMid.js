@@ -101,7 +101,7 @@ export function SinglePost ({data}) {
     }, [focus, comment])
     if (data)
     return(
-        <div className='color3' style={{borderRadius: '10px', width: '100%', padding: '12px 16px 0 16px', marginBottom: '12px', maxWidth: '680px', minWidth: '500px'}}>
+        <div className='color3' style={{borderRadius: '10px', width: '100%', padding: '12px 16px 0 16px', marginBottom: '12px', maxWidth: '680px', minWidth: '480px'}}>
             <div style={{display: 'flex'}}>
                 <img className='circle1' src={createdUser && createdUser.avatarURL}/>
                 <div style={{width: '100%', marginLeft: '10px',}}>
