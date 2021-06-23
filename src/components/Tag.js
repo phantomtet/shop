@@ -25,7 +25,7 @@ export default function Tag(props) {
     return (
         <div style={{display: 'flex'}}>
             <div onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnter} style={{display: 'flex', position: 'relative'}}>
-                <Link style={{fontWeight: 'bold'}} to={'/profile/' + props.info.id}>
+                <Link style={{fontWeight: 'bold', fontSize: props.fontSize}} to={'/profile/' + props.info.id}>
                     {props.info.name}
                 </Link>
                 {hover && <MiniProfile id={props.info.id}/>}      

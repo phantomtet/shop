@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom'
-import {useCollectionData, useDocumentData} from 'react-firebase-hooks/firestore'
+import {useCollectionData, useDocumentData, useDocumentDataOnce} from 'react-firebase-hooks/firestore'
 import {firestore} from '../../firebase'
 import Tag from '../Tag'
 import {FaUserFriends} from 'react-icons/fa'
 import { RiUserReceivedFill, RiArrowRightSLine, RiUserAddFill } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
+import { AddFriendButton } from '../Profile'
 
 export function FriendsButton () {
     return(
@@ -19,8 +20,8 @@ export function FriendsButton () {
 export function Friends () {
     const { path, url } = useRouteMatch()
     return(
-        <div style={{display: 'flex', height: '100%'}}>
-            <div className='color3' style={{position: 'sticky', height: '100%', paddingBottom: '100%', left: 0, width: '300px', top: '50px', padding: '10px 5px'}}>
+        <div className='test' style={{}}>
+            <div className='color3 test' style={{position: 'fixed', width: '300px', height: '100%', top: '50px', padding: '10px 5px'}}>
                 <div style={{fontWeight: 'bolder', fontSize: '30px'}}>
                     Friends
                 </div>
@@ -70,8 +71,23 @@ function List () {
         }
     }, [topic])
     return (
-        <div className='color3' style={{height: '2000px'}}>
-            a
+        <div className='color3' style={{ marginLeft: '300px'}}>
+            {list && list.map(id => <SingleList id={id}/>)}
         </div>
     )
+}
+
+function SingleList ({id}) {
+    const [user] = useDocumentDataOnce(firestore.doc(`users/${id}`))
+
+    if (user) return (
+        <div>
+            <img src={user.avatarURL} style={{width: '168px', height: 'auto'}}/>
+            <div style={{padding: '8px', width: '168px'}}>
+                <Tag info={user} fontSize='20px'/>
+                <AddFriendButton id={user.id} />
+            </div>
+        </div>
+    )
+    else return ''
 }
