@@ -19,7 +19,7 @@ export default function HomeRight () {
         }
     }, [client])
     return (
-        <div className='color2 right' style={{position: 'sticky',top: '50px', right: '0', width: '360px', padding: '5px', height: '100%', color: 'whitesmoke'}}>
+        <div className='color2 right shadow' style={{position: 'sticky',top: '50px', right: '0', width: '360px', padding: '5px', height: '100%', color: 'whitesmoke'}}>
             <div className='' style={{padding: '15px 10px 0px 10px', display: 'flex', justifyContent: 'space-between'}}>
                 <div>
                     Contacts

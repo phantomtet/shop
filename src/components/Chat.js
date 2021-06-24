@@ -83,7 +83,7 @@ function OpenChat ({id, client}) {              //id la id cua doi phuong
     }, [isFocus, text])
     const [user] = useDocumentDataOnce(firestore.collection('users').doc(id))
     return (
-        <div onClick={() => setFocus(true)} className='color3 ' style={{width: '328px', height: '400px', borderRadius: '10px 10px 0 0', border: '1px solid gray'}}>
+        <div onClick={() => setFocus(true)} className='color3 shadow' style={{width: '328px', height: '400px', borderRadius: '10px 10px 0 0',}}>
             <div style={{display: 'flex', justifyContent: 'space-between', borderRadius: '10px 10px 0 0', backgroundColor: isFocus ? '#00e2ff' : ''}}>
                 <div className='canclick' onClick={handleClick} style={{display: 'flex'}}> 
                     {/* avatar */}
@@ -125,7 +125,7 @@ function CollapseChat ({id}) {
     }
     return (
         <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            <div onClick={() => dispatch(removeCollapse(id))} className='canclick ' style={{position: 'absolute', borderRadius: '100%', right: '6px', width: '25px', height: '25px', display: isHover ? 'flex' : 'none', color: 'blue', justifyContent: 'center'}}>
+            <div onClick={() => dispatch(removeCollapse(id))} className='canclick' style={{position: 'absolute', borderRadius: '100%', right: '6px', width: '25px', height: '25px', display: isHover ? 'flex' : 'none', color: 'blue', justifyContent: 'center'}}>
                 <GrClose style={{position: 'relative', top: '5px'}}/>
             </div>
             <img onClick={() => dispatch(addOpen(id))} className='circle2 canclick' onClick={handleClick} src={user && user.avatarURL}/>
@@ -136,7 +136,7 @@ function CollapseChat ({id}) {
 function SingleChat ({data, client}) {            // 1 dong chat trong message, data.createdBy la id nguoi gui
     return (
         <div style={{display: 'flex', margin: '5px', flexFlow: (client.id !== data.createdBy) ? '' : 'row-reverse'}}>     
-            <div className='' style={{padding: '10px 0', backgroundColor: (client.id === data.createdBy) ? 'lightgreen' : 'lightgray', borderRadius: '20px', maxWidth: '202px', overflow: 'hidden', overflowWrap: 'break-word', padding: '10px 15px'}}>{data.text}</div>
+            <div className='shadow' style={{padding: '10px 0', backgroundColor: (client.id === data.createdBy) ? 'lightgreen' : 'lightgray', borderRadius: '20px', maxWidth: '202px', overflow: 'hidden', overflowWrap: 'break-word', padding: '10px 15px'}}>{data.text}</div>
         </div>
     )
 }

@@ -10,12 +10,15 @@ import Market from './Market'
 import Groups from './Groups'
 import {BsSearch} from 'react-icons/bs'
 import {FaFacebook} from 'react-icons/fa'
-export default function NavBar (props) {
+import { Link } from 'react-router-dom'
+export default function NavBar () {
     
     return(
-        <div id='NavBar' className='color3' style={{justifyContent: 'center'}}>
+        <div id='NavBar' className='color3'>
             <div style={{display: 'flex', position: 'absolute', left: '0', margin: '5px 0 5px 15px'}} >
-                <FaFacebook size='40' className='canclick'/>
+                <Link to='/'>
+                    <FaFacebook size='40' className='canclick'/>
+                </Link>
                 <Search/> 
             </div>
             <div id='NavMid'>

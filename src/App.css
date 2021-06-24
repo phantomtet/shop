@@ -3,9 +3,14 @@
     box-sizing: border-box;
     text-decoration: none;
     color: inherit;
+    
+}
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 img {
     object-fit: cover;
+
 }
 input {
     outline: none;
@@ -26,11 +31,15 @@ input {
     border-radius: 7px;
 }
 .canclick {
-    transition: background-color 0.25s;
+    transition: background-color 0.25s, box-shadow 0.25s;
 }
 .canclick:hover {
     cursor: pointer;
     background-color: rgba(128, 128, 128, 0.432);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.canclick:active {
+    box-shadow: none;
 }
 .canclick2:hover {
     text-decoration: underline;
@@ -51,7 +60,7 @@ input {
 }
 #NavBar {
     display: flex;
-    position: sticky;
+    position: fixed;
     top: 0;
     width: 100%;
     height: 50px;

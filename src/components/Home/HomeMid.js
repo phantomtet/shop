@@ -100,9 +100,9 @@ export function SinglePost ({data}) {
     }, [focus, comment])
     if (data)
     return(
-        <div className='color3' style={{borderRadius: '10px', width: '100%', padding: '12px 16px 0 16px', marginBottom: '12px', maxWidth: '680px', minWidth: '480px'}}>
+        <div className='color3 shadow' style={{borderRadius: '10px', width: '100%', padding: '12px 16px 0 16px', margin: 'auto auto 12px auto', maxWidth: '680px', minWidth: '480px'}}>
             <div style={{display: 'flex'}}>
-                <img className='circle1' src={createdUser && createdUser.avatarURL}/>
+                <img className='circle1 shadow' src={createdUser && createdUser.avatarURL}/>
                 <div style={{width: '100%', marginLeft: '10px',}}>
                     <div style={{fontSize: '20px'}}>
                         {createdUser && <Tag info={createdUser}/>}
@@ -157,7 +157,7 @@ export function SinglePost ({data}) {
                 <div style={{marginTop: '10px', paddingBottom: '10px'}}>
                     {/* comment input */}
                     <div style={{display: 'flex'}}>           
-                        <img className='circle0' src={client.avatarURL}/>
+                        <img className='circle0 shadow' src={client.avatarURL}/>
                         <input value={comment} onChange={handleCommentChange} onBlur={() => handleFocus(false)} onFocus={() => handleFocus(true)} placeholder='Write a public comment...' style={{borderRadius: '20px', width: '100%', marginLeft: '5px'}} type='text'/>
                     </div>
                 </div>
@@ -169,11 +169,11 @@ export function SinglePost ({data}) {
 function SingleComment ({data}) {
     const [createdUser] = useDocumentDataOnce(firestore.collection('users').doc(data.createdBy))
     return (
-        <div style={{display: 'flex', marginTop: '10px'}}>
-            <img className='circle0' src={createdUser && createdUser.avatarURL}/>
-            <div>
-                <div className='color4' style={{marginLeft: '10px', width: '100%', padding: '8px 12px 8px 12px', borderRadius: '15px'}}>
-                    <div style={{wordWrap: 'break-word', maxWidth: '380px'}} >
+        <div style={{display: 'flex', marginTop: '10px', maxWidth: '100%'}}>
+            <img className='circle0 shadow' src={createdUser && createdUser.avatarURL}/>
+            <div style={{maxWidth: '90%'}}>
+                <div className='color4 shadow' style={{marginLeft: '10px', maxWidth: '100%', padding: '8px 12px 8px 12px', borderRadius: '15px'}}>
+                    <div  style={{wordWrap: 'break-word', }} >
                         {createdUser && <Tag info={createdUser}/>}
                         {data.text}
                     </div>
@@ -230,9 +230,9 @@ export function NewPost() {
         else alert('')
     }
     return (
-        <div className='color3' style={{width: '100%', padding: '12px 16px 10px 16px', borderRadius: '10px', margin: '15px 0'}}>
+        <div className='color3' style={{width: '100%', minWidth: '480px', maxWidth: '680px', padding: '12px 16px 10px 16px', borderRadius: '10px', marginBottom: '15px'}}>
             <div style={{display: 'flex', marginBottom: '10px'}}>
-                <img src={client.avatarURL} className='circle0'/>
+                <img src={client.avatarURL} className='circle0 shadow'/>
                 <input value={text} onChange={handleTextInput} type='text' placeholder='What is on your mind?' style={{borderRadius: '20px', width: '100%' }}/>
                 <input type='submit' onClick={handleSubmit}/>
             </div>

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {BsThreeDots} from 'react-icons/bs'
 import {addOpen, removeCollapse} from '../actions/chatlistAction'
 import {BsFillPersonCheckFill, BsXOctagon} from 'react-icons/bs'
-import { SinglePost } from './Home/HomeMid'
+import { NewPost, SinglePost } from './Home/HomeMid'
 import {TiTick, TiTimes} from 'react-icons/ti'
 import Tag from './Tag'
 import { BiCamera, BiCaretDown, BiMessageDetail } from 'react-icons/bi'
@@ -72,14 +72,14 @@ export  default function Profile () {
                 <div style={{maxWidth: '960px', margin: 'auto', position: 'relative'}}>
                     <div style={{paddingBottom: '37%', position: 'relative'}}>
                         {/* background  */}
-                        <img style={{position: 'absolute', width: '100%', height: '100%', objectFit: 'cover'}} src={opponents.backgroundURL || opponents.avatarURL}/>
-                        {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputBackground').click()} title='Edit your background' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0}}/>}
+                        <img className='shadow' style={{position: 'absolute', width: '100%', height: '100%', objectFit: 'cover'}} src={opponents.backgroundURL || opponents.avatarURL}/>
+                        {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputBackground').click()} title='Edit your background' className='canclick shadow' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0, backgroundColor: 'lightgray'}}/>}
                         <input onChange={checkValidBackground} id='inputBackground' type='file' style={{display: 'none'}} accept='.jpeg, .png, .jpg'/>
                     </div>
                     <div style={{position: 'absolute', left: '50%', top: '90%', display: 'flex', transform: 'translate(-50%, -50%)'}}>
                         {/* avatar */}
-                        <img className='circle3' style={{ objectFit: 'cover'}} src={opponents.avatarURL}/>
-                        {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0}}/>}
+                        <img className='circle3 shadow' style={{ objectFit: 'cover'}} src={opponents.avatarURL}/>
+                        {client.id === opponents.id && <BiCamera onClick={() => document.getElementById('inputAvatar').click()} title='Edit your avatar' className='canclick shadow' size='30' style={{position: 'absolute', borderRadius: '100%', bottom: '0', right: 0, backgroundColor: 'lightgray'}}/>}
                         <input onChange={checkValidAvatar} id='inputAvatar' type='file' style={{display: 'none'}} accept='.jpeg, .png, .jpg'/>
                     </div>
                 </div>
@@ -104,9 +104,9 @@ export  default function Profile () {
             </div>
             
             {/* sticky navigatebar div */}
-            <div className='color3' style={{zIndex: '2', position: 'sticky', top: '50px'}}>
+            <div className='color3 shadow' style={{zIndex: 1, position: 'sticky', top: '50px'}}>
                 <div style={{maxWidth: '960px', margin: 'auto', padding: '0 10px'}}>   
-                    <div style={{display: 'flex', justifyContent: 'space-between', width: '100%', borderTop: '1px solid gray'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', width: '100%',}}>
                         <div style={{display: 'flex'}}>
                             <Link to={`${url}`}>
                                 <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
@@ -134,7 +134,7 @@ export  default function Profile () {
                             <div onClick={() => setOpenTab('adv')} className='canclick' style={{position: 'relative',height: '60px', padding: '20px 16px 20px 16px', display: 'flex'}}>
                                 More <BiCaretDown />
                                 { openTab === 'adv' &&
-                                    <div id='adv' className='color3' style={{ border: '1px solid blue', maxHeight: '300px', overflow: 'auto', position: 'absolute', left: '85px', minWidth: '150px'}}>
+                                    <div id='adv' className='color3 shadow' style={{maxHeight: '300px', overflow: 'auto', position: 'absolute', left: '85px', minWidth: '150px'}}>
                                     <Link to={`${url}`}>
                                         <div className='canclick' style={{height: '60px', padding: '20px 16px 20px 16px'}}>
                                             Posts
@@ -200,22 +200,23 @@ export  default function Profile () {
     else return "This Page Isn't Available"
 }
 function Posts ({opponents, friends}) {
+    const client = useSelector(state => state.firebase.profile)
     const [posts] = useCollectionData(firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id))
     const [postsWithPhoto] = useCollectionDataOnce(firestore.collection(`posts`).orderBy('fileURL').orderBy('createdAt', 'desc').where('relateTo', 'array-contains', opponents.id).where('fileURL', '!=', '').limit(9))
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>    
-            <div className='collapse1000' style={{width: '400px', margin: '15px'}}>      
-                <div className='color3' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px'}} >  
+        <div style={{display: 'flex', justifyContent: 'space-between', maxWidth: '100%'}}>    
+            <div className='collapse1000' style={{minWidth: '300px', margin: '15px'}}>      
+                <div className='color3 shadow' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px'}} >  
                     <div style={{fontWeight: 'bold', padding: '20px 0 4px'}}>Intro</div>
                     <div>{opponents.intro ? opponents.intro : 'No information given'}</div>
                 </div>
-                <div className='color3' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px' }}>  
+                <div className='color3 shadow' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px' }}>  
                     <div style={{fontWeight: 'bold', padding: '20px 0 4px'}}>Photos</div>
                     <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px'}}>
-                        {postsWithPhoto && postsWithPhoto.map(data => data.fileURL && <Link to={`/${data.path}`}><img key={data.id} src={data.fileURL} style={{minWidth: '30%', width: '100px', height: '100px', margin: 'auto'}}/></Link>)}
+                        {postsWithPhoto && postsWithPhoto.map(data => data.fileURL && <Link key={data.id} to={`/${data.path}`}><img className='shadow' src={data.fileURL} style={{minWidth: '30%', width: '90px', height: '90px', margin: 'auto'}}/></Link>)}
                     </div>
                 </div>
-                <div className='color3' style={{padding: '16px', marginBottom: '15px', borderRadius: '10px'}}>  
+                <div className='color3 shadow' style={{padding: '16px', marginBottom: '15px', borderRadius: '10px'}}>  
                     <div style={{fontWeight: 'bold'}}>Friends</div>
                     <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px',}}>
                         {friends && friends.map(val => <SingleFriend key={val.id} id={val.id}/>)}
@@ -223,7 +224,11 @@ function Posts ({opponents, friends}) {
                 </div>
             </div>
             {/* owner posts */}
-            <div style={{ margin: '15px auto'}}>                   {/*right div */}              
+            <div style={{ margin: '15px auto', maxWidth: '600px', width: '100%'}}>                   {/*right div */}              
+                {/* <div className='color3' style={{ fontWeight: 'bold', fontSize: '25px', margin: '15px 0', padding: '5px', borderRadius: '10px'}}>
+                    {posts && posts.length ? 'Posts' : 'This user has no post yet'}
+                </div> */}
+                {client.id === opponents.id  && <NewPost/>}
                 {posts && posts.map(data => <SinglePost key={data.id} data={data}/>)}
             </div>
         </div>
@@ -308,7 +313,7 @@ function FriendList ({opponents}) {
 export function AddFriendButton (props) {
     const client = useSelector(state => state.firebase.profile)
     const [relation] = useDocumentData(firestore.doc(`users/${client.id}/relationship/${props.id}`))
-    const [relationship, setRelationship] = useState('yourself')
+    const [relationship, setRelationship] = useState('')
     useEffect(() => {
         if (client.id === props.id) return
         if (relation) {
@@ -378,7 +383,7 @@ export function AddFriendButton (props) {
             </div>
         )
     case 'yourself':
-        return '' 
+        return 'aaaaaaaaaaa' 
     }
 }
 

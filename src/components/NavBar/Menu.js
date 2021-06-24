@@ -25,7 +25,7 @@ export default function Menu (props) {
         <div id='Menu' style={{margin: '0 2px 0 2px'}}>
             <RiMenuFill size='40' className='canclick' onClick={open} style={{margin: '5px'}}/>
             {isOpen?
-            <div className='color3' style={{margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', border: '1px solid green'}}>
+            <div className='color3 shadow' style={{margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', borderRadius: '10px'}}>
                 Under Construction  
             </div>
             :

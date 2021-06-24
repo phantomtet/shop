@@ -42,7 +42,7 @@ export default function Messages () {
             {(newMesList && newMesList.length) ? <div style={{display: 'flex', justifyContent: 'center', position: 'absolute', left: '30px', top: '5px', borderRadius: '100%', backgroundColor: '#f02849', minWidth: '15px', minHeight: '15px', color: 'white'}}>{newMesList.length}</div> : ''}
             <RiMessengerLine size='40' className='canclick' onClick={open} style={{margin: '5px'}}/>
             {isOpen?
-            <div className='color3' style={{margin: '8px', padding: '8px', width: '360px', right: '0', top: '50px', border: '1px solid green', overflow: 'auto', maxHeight: '80%', position: 'fixed'}}>
+            <div className='color3 shadow' style={{margin: '8px', padding: '8px', width: '360px', right: '0', top: '50px', overflow: 'auto', maxHeight: '80%', position: 'fixed', borderRadius: '10px'}}>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                     <div style={{fontWeight: 'bold', fontSize: '25px', marginBottom: '10px'}}>
                         Messenger
@@ -81,7 +81,7 @@ function SingleMes ({data, client}) {
     }
     if (user && lastMes)
     return (
-        <div onClick={handeClick} className='canclick' style={{padding: '5px', backgroundColor: data.newMes ? '#c4dfe6' : '', display: 'flex', height: '72px', borderRadius: '10px'}}>
+        <div onClick={handeClick} className='canclick shadow' style={{padding: '5px', backgroundColor: data.newMes ? '#c4dfe6' : '', display: 'flex', height: '72px', borderRadius: '10px'}}>
             <img className='circle2' style={{marginRight: '10px'}} src={user.avatarURL}/>
             <div>
                 <div style={{fontWeight: 'bold'}}>

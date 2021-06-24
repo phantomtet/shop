@@ -11,7 +11,8 @@ export default function MainApp () {
     return(
         <div>
             <Router>
-            <NavBar/>
+                <NavBar/>
+                <div style={{height: '50px'}}></div>
                 <Switch>
                     <Route exact path="/"><Home/></Route>
                     <Route path="/friends"><Friends/></Route>

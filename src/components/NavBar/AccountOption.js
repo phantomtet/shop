@@ -95,7 +95,7 @@ export default function AccountOption (props) {
         <div id='AccountOption' style={{margin: '0 2px 0 2px'}}>
             <AiFillCaretDown size='40' className='canclick' onClick={open} style={{margin: '5px'}}/>
             { isOpen ? 
-            <div className='color3' style={{margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', border: '1px solid gray'}}>
+            <div className='color3 shadow' style={{margin: '8px', padding: '8px 8px', height: '470px', width: '360px', right: '0', position: 'absolute', borderRadius: '10px'}}>
                 <Link to={`/profile/${user.id}`}>
                     <div className='canclick' style={{display: 'flex', padding: '5px', borderBottom: '1px solid green'}}>
                         <img className='circle2' src={user.avatarURL}/>

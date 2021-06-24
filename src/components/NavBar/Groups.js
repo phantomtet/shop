@@ -1,9 +1,10 @@
 import React from 'react'
-import {GrGroup} from 'react-icons/gr'
+import { FaUsers } from 'react-icons/fa'
+import { Link, useRouteMatch } from 'react-router-dom'
 export default function Groups (props) {
     return(
-        <div className='canclick' style={{width: '100px', padding: '0 25px'}}>
-            <GrGroup size='50'/>
-        </div>
+        <Link className='canclick' to='/groups' style={{width: '100px', padding: '0 25px'}}>
+            <FaUsers size='50' color= { useRouteMatch({path: '/groups'}) && '#00ccff'}/>
+        </Link>
     )
 }
