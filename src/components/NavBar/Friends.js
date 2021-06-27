@@ -74,26 +74,32 @@ function List () {
                     return
                 case 'suggest': 
                     let randomUsers = []
-                    let relationshipUsers = []
-                    firestore.collection(`users`).limit(10).get()
+                    firestore.collection(`users`).limit(10).orderBy('id').get()
                     .then(docs => {
                         docs.forEach(doc => randomUsers = randomUsers.concat(doc.id))
                         firestore.collection(`users/${client.id}/relationship`).where('id', 'in', randomUsers).where('relationship', '!=', '').get()
                         .then(docs => {
-                            docs.forEach(doc => relationshipUsers = relationshipUsers.concat(doc.id))
-                            setList(randomUsers.filter(id => !relationshipUsers.includes(id)))
+                            docs.forEach(doc => randomUsers = randomUsers.filter(id => id != doc.id))
+                            setList(randomUsers)
+                           
                         })
                     })
-
                     return
                 case 'allfriends':
-
+                    case 'friendrequest':
+                    firestore.collection(`users/${client.id}/relationship`).where('relationship', '==', 'friends').get()
+                    .then(docs => {
+                        let array = []
+                        docs.forEach(doc => array = array.concat(doc.id))
+                        setList(array)
+                    })
+                    return
             }
         }
     }, [topic, client])
     return (
         <div className='color3' style={{}}>
-            {list && list.map(id => <SingleList key={id} id={id}/>)}
+            {list && list.length ? list.map(id => <SingleList key={id} id={id}/>) : 'None'}
         </div>
     )
 }

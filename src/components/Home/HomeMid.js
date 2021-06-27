@@ -11,34 +11,87 @@ import { addNotify, timeFormat } from '../function'
 export default function HomeMid () {
     const client = useSelector(state => state.firebase.profile)
     const [numberOfPost, setNumberOfPost] = useState(14)
-    const [posts] = useCollectionData(firestore.collection('posts').orderBy('createdAt', 'desc').limit(numberOfPost))
+    const [posts, setPosts] = useState([])      // post la 1 array luu tru id cua bai viet cua nhung nguoi minh follow
+    useEffect(() => {
+        firestore.collection(`posts`).orderBy('createdAt', 'desc').get()
+        .then(docs => {
+            let array = []
+            docs.forEach(doc => array = array.concat(doc.id))
+            setPosts(array)
+        })
+    },[])
     
-    const handleScroll = () => {
+    // const [followIDs, setFollowIDs] = useState(['tcShMQXNwtfBqT7hzaW15kdu6M53'])      // array id cua nhung nguoi minh follow
+    // useEffect(() => {
+    //     let followArray = []
         
-    }
+    // if (!followIDs.length) {            //neu followids rong
+    //         firestore.collection(`users/${client.id}/relationship`).where('follow', '==', true).limit(1).get()
+    //         .then(docs => {
+    //             docs.forEach(doc => followArray = followArray.concat(doc.id))
+    //             setFollowIDs(followArray)
+    //         })
+    //     }
+    //     else {      //neu followids co it nhat 1 phan tu
+    //         firestore.collection(`users/${client.id}/relationship`).where('follow', '==', true).orderBy('id').startAfter(followIDs[followIDs.length-1]).limit(1).get()
+    //         .then(docs => {
+    //             docs.forEach(doc => followArray = followArray.concat(doc.id))
+    //             setFollowIDs(followArray)
+    //         })
+    //     }
+    // }, [numberOfPost, client])
+
+
+    // useEffect(() => {
+    //     if (!followIDs.length) return
+    //     if (!posts.length) {            // neu chua co bai viet nao duoc hien thi
+    //         firestore.collection(`posts`).orderBy('createdAt', 'desc').where('createdBy', 'in', followIDs).limit(1).get()
+    //         .then(docs => {
+    //             let array = []
+    //             docs.forEach(doc => array = array.concat(doc.id))
+    //             setPosts(array)
+    //         })
+    //     }
+    //     else {                  //neu da co bai viet
+    //         firestore.collection(`posts`).orderBy('createdAt', 'desc').where('createdBy', 'in', followIDs).startAfter(posts[posts.length-1]).limit(1).get()
+    //         .then(docs => {
+    //             let array = []
+    //             docs.forEach(doc => array = array.concat(doc.id))
+    //             setPosts(prevPosts => prevPosts.concat(array))
+    //         })
+    //     }
+    // }, [followIDs])
     
     return (
         <div className='mid' style={{minWidth: '500px', maxWidth: '680px'}}>
             <NewPost/>
-            {posts && posts.map(data => <SinglePost key={data.id} data={data}/>)}
+            {posts && posts.map(id => <SinglePost key={id} id={id}/>)}
         </div>
     )
 }
 
-export function SinglePost ({data}) {
+export function SinglePost ({id}) {
+    const [data, setData] = useState('')
     const client = useSelector(state => state.firebase.profile)
     const [focus, setFocus] = useState(false)
     const [numberOfComment, setNumberOfComment] = useState(3)
-    const [commentlist] = useCollectionData(firestore.collection(`posts/${data.id}/comment`).orderBy('createdAt').limitToLast(numberOfComment))
+    const [commentlist] = useCollectionData(firestore.collection(`posts/${id}/comment`).orderBy('createdAt').limitToLast(numberOfComment))
     const [comment, setComment] = useState('')
     const [isCloseComment, setCloseComment] = useState(false)
-    const [createdUser] = useDocumentDataOnce(firestore.collection('users').doc(data.createdBy))
-    const [reaction, setReaction] = useState(() => {
-        if (data.likeCount.includes(client.id)) return 'liked'
-        else if (data.dislikeCount.includes(client.id)) return 'disliked'
-        else return ''
-    })
-    
+    const [createdUser, setCreatedUser] = useState('')
+    const [reaction, setReaction] = useState('')
+    useEffect(() => {
+        firestore.doc(`posts/${id}`).get()
+        .then(doc => setData(doc.data()))
+    }, [reaction])
+    useEffect(() => {
+        if (data) {
+            firestore.doc(`users/${data.createdBy}`).get()
+            .then(doc => setCreatedUser(doc.data()))
+            if (data.likeCount.includes(client.id)) setReaction('liked')
+            else if (data.dislikeCount.includes(client.id)) setReaction('disliked')
+        }
+    }, [data])
     const handeLikeClick = () => {
         switch (reaction) {
             case 'liked': 
@@ -230,7 +283,7 @@ export function NewPost() {
         else alert('')
     }
     return (
-        <div className='color3' style={{width: '100%', minWidth: '480px', maxWidth: '680px', padding: '12px 16px 10px 16px', borderRadius: '10px', marginBottom: '15px'}}>
+        <div className='color3 shadow' style={{width: '100%', minWidth: '480px', maxWidth: '680px', padding: '12px 16px 10px 16px', borderRadius: '10px', marginBottom: '15px'}}>
             <div style={{display: 'flex', marginBottom: '10px'}}>
                 <img src={client.avatarURL} className='circle0 shadow'/>
                 <input value={text} onChange={handleTextInput} type='text' placeholder='What is on your mind?' style={{borderRadius: '20px', width: '100%' }}/>

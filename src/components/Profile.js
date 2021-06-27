@@ -201,7 +201,16 @@ export  default function Profile () {
 }
 function Posts ({opponents, friends}) {
     const client = useSelector(state => state.firebase.profile)
-    const [posts] = useCollectionData(firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id))
+    // const [posts] = useCollectionData(firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id))
+    const [posts, setPosts] = useState([])
+    useEffect(() => {
+        firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id).get()
+        .then(docs => {
+            let array = []
+            docs.forEach(doc => array = array.concat(doc.id))
+            setPosts(array)
+        })
+    }, [])
     const [postsWithPhoto] = useCollectionDataOnce(firestore.collection(`posts`).orderBy('fileURL').orderBy('createdAt', 'desc').where('relateTo', 'array-contains', opponents.id).where('fileURL', '!=', '').limit(9))
     return (
         <div style={{display: 'flex', justifyContent: 'space-between', maxWidth: '100%'}}>    
@@ -229,7 +238,7 @@ function Posts ({opponents, friends}) {
                     {posts && posts.length ? 'Posts' : 'This user has no post yet'}
                 </div> */}
                 {client.id === opponents.id  && <NewPost/>}
-                {posts && posts.map(data => <SinglePost key={data.id} data={data}/>)}
+                {posts && posts.map(id => <SinglePost key={id} id={id}/>)}
             </div>
         </div>
     )

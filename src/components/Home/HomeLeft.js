@@ -26,64 +26,64 @@ export default function HomeLeft () {
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/y5/r/PrjLkDYpYbH.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Groups
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/VPndBxotRgH.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Memories
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/yU/r/D2y-jJ2C_hO.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Marketplace
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/yH/r/kyCAf2jbZvF.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Pages
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/y5/r/duk32h44Y31.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Watch
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/ys/r/8wTx0Eu2vRq.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Events
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/lVijPkTeN-r.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Saved
                     </div>
                 </div>
             </Link>
-            <Link to={'/profile/' + user.id}>
-                <div className='canclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
+            <Link to='/'>
+                <div className='cantclick' style={{display: 'flex', borderRadius: '10px', padding: '5px'}}>
                     <img src='https://static.xx.fbcdn.net/rsrc.php/v3/yo/r/DO-SN-shaZL.png'/>
                     <div style={{padding: '10px', width: '100%'}}>
                         Jobs

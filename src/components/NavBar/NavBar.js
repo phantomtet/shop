@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 export default function NavBar () {
     
     return(
-        <div id='NavBar' className='color3'>
+        <div id='NavBar' className='color3 shadow'>
             <div style={{display: 'flex', position: 'absolute', left: '0', margin: '5px 0 5px 15px'}} >
                 <Link to='/'>
                     <FaFacebook size='40' className='canclick'/>

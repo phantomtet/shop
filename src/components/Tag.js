@@ -38,7 +38,7 @@ export function MiniProfile ({id}) {
     const [user] = useDocumentDataOnce(firestore.collection('users').doc(id))
     if (user)
     return (
-        <div className='color3 shadow' style={{ position: 'absolute', top: '25px', left: '-100px', minWidth: '400px', minHeight: '182px', padding: '16px 12px 16px 12px', fontSize: '18px', zIndex: 2}}>
+        <div className='color3 shadow' style={{ position: 'absolute', top: '25px', left: '-100px', minWidth: '400px', minHeight: '182px', padding: '16px 12px 16px 12px', fontSize: '18px', zIndex: 2, borderRadius: '10px'}}>
             <div style={{display: 'flex', marginBottom: '5px'}}>
                 <img style={{width: '96px', height: '96px', borderRadius: '100%'}} src={user.avatarURL}/>
                 <div style={{marginLeft: '15px'}}>
