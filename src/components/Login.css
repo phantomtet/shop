@@ -8,18 +8,17 @@ input {
 #signin {
     display: flex;
     justify-content: center;
-    background-color: #c4dfe6;
     border-radius: 20px;
     padding: 10px;
     transition: background-color 0.5s;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-#signin:hover, .login-button:hover {
-    background-color: aqua;
-    cursor: pointer;
 
 }
-#signin:active, .login-button:active {
+.enable:hover {
+    background-color: aqua;
+    cursor: pointer;
+}
+
+.enable:active {
     box-shadow: none;
 }
 .login-button {
@@ -27,9 +26,15 @@ input {
     display: flex;
     justify-content: center;
     padding: 10px 0;
-    background-color: #c4dfe6;
     margin: 10px;
     transition: background-color 0.5s;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
+}
+.enable {
+    background-color: #c4dfe6;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.disable {
+    box-shadow: 0 0 10px;
+    background-color: #88898a;
 }
