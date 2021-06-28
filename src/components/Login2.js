@@ -28,25 +28,10 @@ export default function Login2 () {
         })
     }
     return (
-        <div className='' style={{position: 'absolute', height: '100%', width: '100%', display: 'flex', justifyContent: 'center'}}>
-            <div className=' color3' style={{position: 'relative', margin: 'auto', borderRadius: '0 20px'}}>
-                <div style={{fontWeight: 'bolder', fontSize: '25px', position: 'absolute', top: '-22px', left: '6px', color: '#66a5ad'}}>
-                    Fakebook
-                </div>
-                <div className='canclick' onClick={() => signin('google')} style={{display: 'flex', margin: '5px'}}>
-                    <FcGoogle size='30'/>
-                    <div  style={{padding: '5px'}}>Sign in with Google Account</div>
-                </div>
-                <div title="Not working yet" className='cantclick' style={{display: 'flex', margin: '5px'}}>
-                    <FaFacebook size='30'/>
-                    <div  style={{padding: '5px'}}>Sign in with Facebook Account</div>
-                </div>
-                <div className='canclick' onClick={signinWithGuest} style={{display: 'flex', margin: '5px'}}>
-                    <FaUserTie size='30' color='lightgreen'/>
-                    <div style={{padding: '5px'}}>Or sign in with Guest Account</div>
-                </div>
+        <div id='login' className='test' style={{position: 'fixed', height: '100%', width: '100%',}}>
+            <div style={{ background: 'linear-gradient(132deg, #FC415A, #591BC5, #212335)', animation: 'Gradient 15s ease infinite', backgroundSize: '400% 400%', height: '100vh', width: '100%'}}>
+                a
             </div>
-            
         </div>
     )
 }
