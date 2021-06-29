@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux'
 import {RiLiveLine} from 'react-icons/ri'
 import {v4} from 'uuid'
 import {FcGallery} from 'react-icons/fc'
-import { BiDislike, BiLike } from 'react-icons/bi'
+import { BiDislike, BiLike, BiX } from 'react-icons/bi'
 import { addNotify, timeFormat } from '../function'
 import ReactPlayer from 'react-player'
+import { BsFillEjectFill } from 'react-icons/bs'
 export default function HomeMid () {
     const client = useSelector(state => state.firebase.profile)
     const [numberOfPost, setNumberOfPost] = useState(14)
@@ -168,8 +169,10 @@ export function SinglePost ({id}) {
             </div>
             <div style={{margin: '5px 0 5px 0'}}>
                 {data.text}
-                {data.fileURL && <img src={data.fileURL} style={{width: '100%', padding: '0 -16px 0 -16px'}}/>}
-                {data.fileURL && <ReactPlayer width='100%' controls url={data.fileURL}/>}
+                <div style={{maxHeight: '680px', display: 'grid', gridTemplateColumns: 'auto auto', gridTemplateRows: 'auto auto'}}>
+                    {data.file && data.file.map(filee => <MediaPlayer file={filee}/>)}
+
+                </div>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-between', padding: '5px 0 5px 0'}}>
                 <div style={{display: 'flex',}}>
@@ -219,7 +222,40 @@ export function SinglePost ({id}) {
             </>}
         </div>
     )
-    else return 'a'
+    else return ''
+}
+function MediaPlayer ({file}) {
+    const [type, setType] = useState('')
+    const [url, setURL] = useState('')
+    useEffect(() => {
+        storage.ref(file).getMetadata()
+        .then(data => {
+            if (data.contentType.includes('image/')) {
+                setType('image')
+                return
+            }
+            if (data.contentType.includes('video/')) {
+                setType('video')
+                return
+            }
+        })
+        storage.ref(file).getDownloadURL()
+        .then(url => setURL(url))
+    },[])
+    switch (type) {
+        case 'image':
+            return (
+                <div style={{}}>
+                    <img src={url} style={{width: '100%'}}/>
+                </div>
+            )
+        case 'video':
+            return (
+                <ReactPlayer controls width='100%' height='100%' url={url}/>
+            )
+        default:
+            return ''
+    }
 }
 function SingleComment ({data}) {
     const [createdUser] = useDocumentDataOnce(firestore.collection('users').doc(data.createdBy))
@@ -242,24 +278,20 @@ function SingleComment ({data}) {
 }
 export function NewPost() {
     const [text, setText] = useState('')
-    const [file, setFile] = useState('')
+    const [file, setFile] = useState([])
     const client = useSelector(state => state.firebase.profile)
-    const handleTextInput = ({target}) => {
-        setText(target.value)
-    }
     const handleFileInput = ({target}) => {
-        // if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
-        //     alert('File is too big or invalid file type')
-        //     target.value = ''
-        // }
-        // else 
-        setFile(target.files[0])
+        if (target.file && target.files[0].size >= 209715200 || !['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', ].includes(target.files[0].type)) {
+            alert('File is too big or invalid file type' + target.files[0].type)
+            target.value = ''
+        }
+        else setFile(prevState => [...prevState, target.files[0]])
     }
     const addfile = () => {
         document.getElementById('addfilebutton').click()
     }
     const handleSubmit = () => {
-        if (text || file) {
+        if (text || file.length) {
             const newDoc = firestore.collection('posts').doc()
             newDoc.set({
                 text: text,
@@ -268,20 +300,22 @@ export function NewPost() {
                 likeCount: [],
                 dislikeCount: [],
                 id: newDoc.id,
-                fileURL: '',
+                file: [],
                 numberOfComment: 0,
                 relateTo: [client.id],
                 path: `posts/${newDoc.id}`
             })
-            if (file) {
-                const id = v4()
-                storage.ref(`photo/${client.id}/${id}`).put(file)
-                .then(snapshot =>
-                    snapshot.ref.getDownloadURL().then(url => newDoc.update({fileURL: url}))
-                )      
+            if (file.length !== 0) {
+                file.forEach(filee => {
+                    const id = v4()
+                    storage.ref(`photo/${client.id}/${id}`).put(filee)
+                    .then(snapshot => {
+                        newDoc.update({file: firebase.firestore.FieldValue.arrayUnion(snapshot.ref.fullPath)})
+                }) 
+                })     
             }        
             setText('')
-            setFile('')
+            setFile([])
         }
         else alert('Type something first')
     }
@@ -289,7 +323,7 @@ export function NewPost() {
         <div className='color3 shadow' style={{width: '100%', minWidth: '480px', maxWidth: '680px', padding: '12px 16px 10px 16px', borderRadius: '10px', marginBottom: '15px'}}>
             <div style={{display: 'flex', marginBottom: '10px'}}>
                 <img src={client.avatarURL} className='circle0 shadow'/>
-                <input value={text} onChange={handleTextInput} type='text' placeholder='What is on your mind?' style={{borderRadius: '20px', width: '100%', margin: '0 5px' }}/>
+                <input value={text} onChange={({target}) => setText(target.value)} type='text' placeholder='What is on your mind?' style={{borderRadius: '20px', width: '100%', margin: '0 5px' }}/>
                 <div onClick={handleSubmit} className='canclick'  style={{width: '80px', borderRadius: '10px', display: 'flex', backgroundColor: '#c4dfe6'}}>
                     <div style={{margin: 'auto'}}>
                         Post
@@ -297,7 +331,10 @@ export function NewPost() {
                 </div>
             </div>
             <div>
-                {file && file.name}
+            {
+                // action xoa item trong file list 
+                file.length !== 0 && file.map((filee, indexx) => <SingleFile key={indexx} file={filee} action={() => setFile(prevState => prevState.filter((a, index) => index !=indexx))}/>)
+            }
             </div>
             <hr/>
             <div style={{display: 'flex', marginTop: '10px'}}>
@@ -306,7 +343,7 @@ export function NewPost() {
                     <div style={{padding: '3px 0 0 5px'}}>Live Video</div>
                 </div>
                     <div onClick={addfile} className=' canclick' style={{width: '100%',  display: 'flex', padding: '8px', justifyContent: 'center'}}>
-                        <input onChange={handleFileInput} id='addfilebutton' type='file' accept='.jpeg, .png' style={{display: 'none'}}/>
+                        <input onChange={handleFileInput} id='addfilebutton' type='file' accept='image/*, video/*' style={{display: 'none'}}/>
                         <FcGallery size='24'/>
                         <div style={{padding: '3px 0 0 5px'}}>Photo/Video</div>
                     </div>
@@ -317,6 +354,16 @@ export function NewPost() {
                 </div>
                 
             </div>
+        </div>
+    )
+}
+function SingleFile ({file, action}) {
+    return (
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div>
+                {file.name}
+            </div>
+            <BiX className='canclick' onClick={action}/>
         </div>
     )
 }
