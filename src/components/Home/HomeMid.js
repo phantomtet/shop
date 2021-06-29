@@ -8,6 +8,7 @@ import {v4} from 'uuid'
 import {FcGallery} from 'react-icons/fc'
 import { BiDislike, BiLike } from 'react-icons/bi'
 import { addNotify, timeFormat } from '../function'
+import ReactPlayer from 'react-player'
 export default function HomeMid () {
     const client = useSelector(state => state.firebase.profile)
     const [numberOfPost, setNumberOfPost] = useState(14)
@@ -168,6 +169,7 @@ export function SinglePost ({id}) {
             <div style={{margin: '5px 0 5px 0'}}>
                 {data.text}
                 {data.fileURL && <img src={data.fileURL} style={{width: '100%', padding: '0 -16px 0 -16px'}}/>}
+                {data.fileURL && <ReactPlayer width='100%' controls url={data.fileURL}/>}
             </div>
             <div style={{display: 'flex', justifyContent: 'space-between', padding: '5px 0 5px 0'}}>
                 <div style={{display: 'flex',}}>
@@ -246,11 +248,12 @@ export function NewPost() {
         setText(target.value)
     }
     const handleFileInput = ({target}) => {
-        if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
-            alert('File is too big or invalid file type')
-            target.value = ''
-        }
-        else setFile(target.files[0])
+        // if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+        //     alert('File is too big or invalid file type')
+        //     target.value = ''
+        // }
+        // else 
+        setFile(target.files[0])
     }
     const addfile = () => {
         document.getElementById('addfilebutton').click()
@@ -280,14 +283,18 @@ export function NewPost() {
             setText('')
             setFile('')
         }
-        else alert('')
+        else alert('Type something first')
     }
     return (
         <div className='color3 shadow' style={{width: '100%', minWidth: '480px', maxWidth: '680px', padding: '12px 16px 10px 16px', borderRadius: '10px', marginBottom: '15px'}}>
             <div style={{display: 'flex', marginBottom: '10px'}}>
                 <img src={client.avatarURL} className='circle0 shadow'/>
-                <input value={text} onChange={handleTextInput} type='text' placeholder='What is on your mind?' style={{borderRadius: '20px', width: '100%' }}/>
-                <input type='submit' onClick={handleSubmit}/>
+                <input value={text} onChange={handleTextInput} type='text' placeholder='What is on your mind?' style={{borderRadius: '20px', width: '100%', margin: '0 5px' }}/>
+                <div onClick={handleSubmit} className='canclick'  style={{width: '80px', borderRadius: '10px', display: 'flex', backgroundColor: '#c4dfe6'}}>
+                    <div style={{margin: 'auto'}}>
+                        Post
+                    </div>
+                </div>
             </div>
             <div>
                 {file && file.name}
