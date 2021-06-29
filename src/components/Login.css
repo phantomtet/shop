@@ -1,10 +1,4 @@
-::placeholder {
-    color: white;
-    opacity: 0.5;
-}
-input {
-    padding: 0 20px;
-}
+
 #signin {
     display: flex;
     justify-content: center;
@@ -37,4 +31,21 @@ input {
 .disable {
     box-shadow: 0 0 10px;
     background-color: #88898a;
+}
+.group {
+    position:relative; 
+}
+label {
+    color:white; 
+    opacity: 0.5;
+    font-size:18px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left: 20px;
+    bottom: 20px;
+    transition:0.2s ease all; 
+}
+input:valid ~ label, input:focus ~ label {
+    bottom: 50px;
 }

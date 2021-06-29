@@ -46,8 +46,14 @@ export default function Login2 () {
                         Fakebook
                     </div>
                     <div style={{ padding: '10px'}}>
-                        <input onChange={({target}) => setUsername(target.value)} placeholder='Username' style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
-                        <input onChange={({target}) => setPassword(target.value)} type='password' placeholder='Password' style={{width: '100%', marginBottom: '15px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                        <div className='group'>
+                            <input required type='text' onChange={({target}) => setUsername(target.value)} value={username} style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                            <label>Username</label>
+                        </div>
+                        <div className='group'>
+                            <input required type='password' onChange={({target}) => setPassword(target.value)} value={password} style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                            <label>Password</label>
+                        </div>
                         {
                             error && <div style={{color: 'red'}}>{error.message}</div>
                         }
@@ -93,8 +99,27 @@ function Signup () {
     const firebase = useFirebase()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
     const [error, setError] = useState('')
+    useEffect(() => {
+        name.replace()
+    }, [name])
     const signup = () => {
+        if (username && password ) {
+            auth.createUserWithEmailAndPassword(username, password)
+            .then(result => {
+                if (result.additionalUserInfo.isNewUser) {
+                    const defaultData =  {
+                        id: result.user.uid,
+                        name: name,
+                        avatarURL: result.user.photoURL,
+                    }
+                    firestore.collection('users').doc(result.user.uid).set(defaultData)
+                }
+                auth.signInWithEmailAndPassword(username, password)
+                })
+            .catch(err => setError(err))
+        }
         
     }
     return (
@@ -103,12 +128,22 @@ function Signup () {
                 Fakebook
             </div>
             <div style={{ padding: '10px'}}>
-                <input onChange={({target}) => setUsername(target.value)} placeholder='Username' style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
-                <input onChange={({target}) => setPassword(target.value)} type='password' placeholder='Password' style={{width: '100%', marginBottom: '15px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                <div className='group'>
+                    <input required type='text' onChange={({target}) => setUsername(target.value)} value={username} style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                    <label>Username</label>
+                </div>
+                <div className='group'>
+                    <input required type='password' onChange={({target}) => setPassword(target.value)} value={password} style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                    <label>New Password</label>
+                </div>
+                <div className='group'>
+                    <input required type='text' onChange={({target}) => setName(target.value)} value={name} style={{width: '100%', margin: '15px 0 10px', fontSize: '25px', height: '40px', border: 'none', borderRadius: '30px', backgroundColor: 'rgba(0, 0, 0, 0.25)'}}/>
+                    <label>Your Full Name</label>
+                </div>
                 {
                     error && <div style={{color: 'red'}}>{error.message}</div>
                 }
-                <div onClick={signup} id='signin' className={username && password ? 'enable' : 'disable'}>
+                <div style={{marginTop: '15px'}} onClick={signup} id='signin' className={username && password ? 'enable' : 'disable'}>
                     SIGN UP
                 </div>
                 

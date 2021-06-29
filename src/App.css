@@ -13,9 +13,12 @@ img {
 
 }
 input {
+    border: none;
     outline: none;
-    padding-left: 10px;
+    padding-left: 20px;
+    border-radius: 7px;
 }
+
 .test {
     border: 1px solid red;
 }
@@ -27,9 +30,6 @@ input {
     justify-content: space-between;
 }
 
-input {
-    border-radius: 7px;
-}
 .canclick {
     transition: background-color 0.25s, box-shadow 0.25s;
 }
@@ -51,13 +51,7 @@ input {
 .cantclick:hover {
     cursor: not-allowed;
 }
-#Login input {
-    border: 2px solid gray
-}
-#Login input:focus {
-    border: 2px solid green;
-    outline: none;
-}
+
 #NavBar {
     display: flex;
     position: fixed;
