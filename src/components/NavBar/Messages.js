@@ -23,7 +23,7 @@ export default function Messages () {
         }
     }
     useEffect(() => {
-        if (newMesList && chatlist.open)
+        if (newMesList && chatlist.open.length)
         newMesList.filter(ref => chatlist.open.includes(ref.createdBy)).forEach(ele => firestore.collection('users').doc(client.id).collection('messenger').doc(ele.createdBy).set({newMes: false}, {merge: true}))
     }, [newMesList, chatlist])
     const open = () => {
@@ -81,7 +81,7 @@ function SingleMes ({data, client}) {
     }
     if (user && lastMes)
     return (
-        <div onClick={handeClick} className='canclick shadow' style={{padding: '5px', backgroundColor: data.newMes ? '#c4dfe6' : '', display: 'flex', height: '72px', borderRadius: '10px'}}>
+        <div onClick={handeClick} className='canclick shadow' style={{margin: '10px 0', padding: '5px', backgroundColor: data.newMes ? '#c4dfe6' : '', display: 'flex', height: '72px', borderRadius: '10px'}}>
             <img className='circle2' style={{marginRight: '10px'}} src={user.avatarURL}/>
             <div>
                 <div style={{fontWeight: 'bold'}}>

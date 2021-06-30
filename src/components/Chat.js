@@ -85,7 +85,7 @@ function OpenChat ({id, client}) {              //id la id cua doi phuong
     return (
         <div onClick={() => setFocus(true)} className='color3 shadow' style={{width: '328px', height: '400px', borderRadius: '10px 10px 0 0',}}>
             <div style={{display: 'flex', justifyContent: 'space-between', borderRadius: '10px 10px 0 0', backgroundColor: isFocus ? '#00e2ff' : ''}}>
-                <div className='canclick' onClick={handleClick} style={{display: 'flex'}}> 
+                <div className='canclick ' onClick={handleClick} style={{display: 'flex', width: '100%'}}> 
                     {/* avatar */}
                     <img className='circle0' src={user && user.avatarURL} style={{margin: '5px'}}/>   
                     {/* User name */}

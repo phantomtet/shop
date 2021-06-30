@@ -169,7 +169,7 @@ export function SinglePost ({id}) {
             </div>
             <div style={{margin: '5px 0 5px 0'}}>
                 {data.text}
-                <div style={{maxHeight: '680px', display: 'grid', gridTemplateColumns: 'auto auto', gridTemplateRows: 'auto auto'}}>
+                <div className='test' style={{maxHeight: '', display: 'grid', gridTemplateColumns: '100%', gridTemplateRows: ''}}>
                     {data.file && data.file.map((filee, index) => <MediaPlayer key={index} file={filee}/>)}
 
                 </div>
@@ -205,7 +205,7 @@ export function SinglePost ({id}) {
                 </div>
             </div>
             {!isCloseComment && 
-            <>
+            <div>
                 <div className='canclick2' onClick={() => setNumberOfComment(numberOfComment + 10)} style={{margin: '5px 0'}}>
                     {commentlist && data.numberOfComment > commentlist.length ? 'View previous comments' : ''}
                 </div>
@@ -219,7 +219,7 @@ export function SinglePost ({id}) {
                         <input value={comment} onChange={handleCommentChange} onBlur={() => handleFocus(false)} onFocus={() => handleFocus(true)} placeholder='Write a public comment...' style={{borderRadius: '20px', width: '100%', marginLeft: '5px'}} type='text'/>
                     </div>
                 </div>
-            </>}
+            </div>}
         </div>
     )
     else return ''
@@ -245,7 +245,7 @@ function MediaPlayer ({file}) {
     switch (type) {
         case 'image':
             return (
-                <div style={{width: '100%'}}>
+                <div className='test' style={{width: '100%'}}>
                     <img src={url} style={{width: '100%', height: '100%'}}/>
                 </div>
             )
@@ -285,9 +285,9 @@ export function NewPost() {
             alert('We support upload 4 files per time only')
             return
         }
-        if (target.file && target.files[0].size >= 209715200 || !['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', ].includes(target.files[0].type)) {
-            target.value = ''
+        else if (target.file && target.files[0].size >= 209715200 || target.file &&  !['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', ].includes(target.files[0].type)) {
             alert('File is too big or invalid file type' + target.files[0].type)
+            target.value = ''
         }
         else setFile(prevState => [...prevState, target.files[0]])
     }
@@ -312,10 +312,22 @@ export function NewPost() {
             if (file.length !== 0) {
                 file.forEach(filee => {
                     const id = v4()
-                    storage.ref(`photo/${client.id}/${id}`).put(filee)
-                    .then(snapshot => {
-                        newDoc.update({file: firebase.firestore.FieldValue.arrayUnion(snapshot.ref.fullPath)})
-                }) 
+                    if (filee.type.includes('image/')) {
+                        storage.ref(`${client.id}/image/${id}`).put(filee)
+                        .then(snapshot => {
+                            snapshot.ref.updateMetadata({customMetadata: {post: newDoc.path}})
+                            newDoc.update({file: firebase.firestore.FieldValue.arrayUnion(snapshot.ref.fullPath)})
+                        })
+                        return
+                    }
+                    if (filee.type.includes('video/')) {
+                        storage.ref(`${client.id}/video/${id}`).put(filee)
+                        .then(snapshot => {
+                            snapshot.ref.updateMetadata({customMetadata: {post: newDoc.path}})
+                            newDoc.update({file: firebase.firestore.FieldValue.arrayUnion(snapshot.ref.fullPath)})
+                        })
+                        return
+                    }
                 })     
             }        
             setText('')

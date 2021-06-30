@@ -5,11 +5,10 @@ import { SinglePost } from "./Home/HomeMid";
 
 export default function Post () {
     const { id } = useParams()
-    const [data] = useDocumentData(firestore.collection('posts').doc(id))
-    if (data)
+    if (id)
     return (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-            <SinglePost data = {data}/>
+        <div style={{display: 'flex', justifyContent: 'center', paddingTop: '15px'}}>
+            <SinglePost id = {id}/>
         </div>
     )
     else return (

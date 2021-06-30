@@ -43,7 +43,7 @@ export  default function Profile () {
         }
     }
     const checkValidAvatar = ({target}) => {
-        if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+        if (target.file && target.files[0].size >= 2097152 || target.file && !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
             alert('File is too big or invalid file type')
             target.value = ''
         }
@@ -54,7 +54,7 @@ export  default function Profile () {
         }
     }
     const checkValidBackground = ({target}) => {
-        if (target.file && target.files[0].size >= 2097152 || !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
+        if (target.file && target.files[0].size >= 2097152 || target.file && !['image/gif', 'image/jpeg', 'image/png'].includes(target.files[0].type)) {
             alert('File is too big or invalid file type')
             target.value = ''
         }
@@ -211,7 +211,16 @@ function Posts ({opponents, friends}) {
             setPosts(array)
         })
     }, [])
-    const [postsWithPhoto] = useCollectionDataOnce(firestore.collection(`posts`).orderBy('fileURL').orderBy('createdAt', 'desc').where('relateTo', 'array-contains', opponents.id).where('fileURL', '!=', '').limit(9))
+    // const [postsWithPhoto] = useCollectionDataOnce(firestore.collection(`posts`).orderBy('fileURL').orderBy('createdAt', 'desc').where('relateTo', 'array-contains', opponents.id).where('fileURL', '!=', '').limit(9))
+    const [imagePaths, setImagePaths] = useState([])
+    useEffect(() => {
+        storage.ref(`${opponents.id}/image`).list({maxResults: 9})
+        .then(value => {
+            let array = []
+            value.items.forEach(item => array = array.concat(item.fullPath))
+            setImagePaths(array)
+        })
+    },[])
     return (
         <div style={{display: 'flex', justifyContent: 'space-between', maxWidth: '100%'}}>    
             <div className='collapse1000' style={{minWidth: '300px', margin: '15px'}}>      
@@ -221,14 +230,14 @@ function Posts ({opponents, friends}) {
                 </div>
                 <div className='color3 shadow' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px' }}>  
                     <div style={{fontWeight: 'bold', padding: '20px 0 4px'}}>Photos</div>
-                    <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px'}}>
-                        {postsWithPhoto && postsWithPhoto.map(data => data.fileURL && <Link key={data.id} to={`/${data.path}`}><img className='shadow' src={data.fileURL} style={{minWidth: '30%', width: '90px', height: '90px', margin: 'auto'}}/></Link>)}
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridRowGap: '5px', gridTemplateRows: 'auto auto auto'}}>
+                        {imagePaths.length !== 0 && imagePaths.map((path, index) => <SinglePhoto key={index} path={path} />)}
                     </div>
                 </div>
                 <div className='color3 shadow' style={{padding: '16px', marginBottom: '15px', borderRadius: '10px'}}>  
                     <div style={{fontWeight: 'bold'}}>Friends</div>
-                    <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto', gridRowGap: '5px',}}>
-                        {friends && friends.map(val => <SingleFriend key={val.id} id={val.id}/>)}
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridRowGap: '5px', gridTemplateRows: 'auto auto auto'}}>
+                        {friends && friends.map((val, index) => <SingleFriend key={index} id={val.id}/>)}
                     </div>
                 </div>
             </div>
@@ -243,12 +252,32 @@ function Posts ({opponents, friends}) {
         </div>
     )
 }
+
+function SinglePhoto ({path}) {
+    const [url, setURL] = useState('')
+    const [postPath, setPostPath] = useState('')
+    useEffect(() => {
+        storage.ref(path).getDownloadURL()
+        .then(url => setURL(url))
+        storage.ref(path).getMetadata()
+        .then(metadata => setPostPath(metadata.customMetadata.post))
+    },[])
+    if (postPath && url) return (
+        <div style={{width: '100%', height: 'auto',}}>
+            <Link to={`/${postPath}`}>
+                <img className='shadow' src={url} style={{width: '92.66px', height: '92.66px'}}/>
+            </Link>
+        </div>
+    )
+    else return ''
+}
+
 function SingleFriend ({id}) {
     const [user] = useDocumentData(firestore.collection('users').doc(id))
     return (
-        <div className='canclick3' style={{minWidth: '30%', height: 'auto',}}>
+        <div style={{width: '100%', height: 'auto',}}>
             <Link to={'/profile/' + id}>
-                <img style={{width: '90px', height: '90px'}} src={user && user.avatarURL}/>
+                <img style={{width: '100%', height: '92.66px'}} src={user && user.avatarURL}/>
                 <div style={{width: '90px', overflow: 'hidden'}}>
                     {user && user.name}
                 </div>
