@@ -3,6 +3,9 @@ import { useSelector} from 'react-redux'
 import {auth} from '../../firebase'
 import {AiFillCaretDown} from 'react-icons/ai'
 import { Link } from 'react-router-dom'
+import {RiSettings4Fill, RiQuestionLine, RiLogoutBoxRLine} from 'react-icons/ri'
+import {GiMoon} from 'react-icons/gi'
+import { BsExclamationCircleFill } from 'react-icons/bs'
 export default function AccountOption (props) { 
     const user = useSelector(state => state.firebase.profile)
     const [isOpen, setOpen] = useState(false)
@@ -106,15 +109,17 @@ export default function AccountOption (props) {
                     </div>
                 </Link>
                 <div className='canclick' style={{margin: '5px 0',display: 'flex', padding: '5px', borderBottom: '1px solid green'}}>
-                    <img className='circle0' src='https://i1.wp.com/southbroomhouse.com/wp-content/uploads/2020/02/exclamation-mark-symbol-computer-icons-circle-warning-sign-exclamation-mark-thumbnail.jpg'/>
-                    <div style={{width: '100%', marginLeft: '5px', padding: '5px 5px 5px 5px'}}>
-                        <h4>
-                            Give Feedback
-                        </h4>
-                        <p>Help us improve the new Facebook.</p>
+                    <BsExclamationCircleFill size='35'/>
+                    <div style={{width: '100%', marginLeft: '5px', display: 'flex'}}>
+                        <div>
+                            <h4 style={{margin: 'auto 0', display: 'block'}}>
+                                Give Feedback
+                            </h4>
+                            <p>Help us improve the new Facebook.</p>
+                        </div>
                     </div>
                 </div>
-                <div className='canclick' style={{display: 'flex', padding: '5px'}}>
+                {/* <div className='canclick' style={{display: 'flex', padding: '5px'}}>
                     <img className='circle0' src=''/>
                     <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
                         <h4>
@@ -122,37 +127,37 @@ export default function AccountOption (props) {
                         </h4>
                         <p>Log in as other client</p>
                     </div>
-                </div>
+                </div> */}
                 <div onClick={() => setFocusTab('setting')} className='canclick' style={{display: 'flex', padding: '5px'}}>
-                    <img className='circle0' src='https://freeiconshop.com/wp-content/uploads/edd/settings-solid.png'/>
-                    <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
-                        <h4>
+                    <RiSettings4Fill size='35' />
+                    <div style={{width: '100%', marginLeft: '5px', display: 'flex'}}>
+                        <h4 style={{margin: 'auto 0'}}>
                             Setting & Privacy
                         </h4>
                         
                     </div>
                 </div>
                 <div onClick={() => setFocusTab('help')} className='canclick' style={{display: 'flex', padding: '5px'}}>
-                    <img className='circle0' src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png'/>
-                    <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
-                        <h4>
+                    <RiQuestionLine size='35'/>
+                    <div style={{width: '100%', marginLeft: '5px', display: 'flex'}}>
+                        <h4 style={{margin: 'auto 0'}}>
                             Help & Support
                         </h4>
                         
                     </div>
                 </div>
                 <div onClick={() => setFocusTab('display')} className='canclick' style={{display: 'flex', padding: '5px'}}>
-                    <img className='circle0' src='https://www.pngfind.com/pngs/m/223-2232869_png-file-svg-moon-icon-circle-png-transparent.png'/>
-                    <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
-                        <h4>
+                    <GiMoon size ='35'/>
+                    <div style={{width: '100%', marginLeft: '5px', display: 'flex'}}>
+                        <h4 style={{margin: 'auto 0'}}>
                             Display & Accessibility
                         </h4>
                     </div>
                 </div>
                 <div onClick={() => auth.signOut()} className='canclick' style={{display: 'flex', padding: '5px'}}>
-                    <img className='circle0' src='https://cdn2.iconfinder.com/data/icons/picons-essentials/57/logout-512.png'/>
-                    <div style={{width: '100%', marginLeft: '5px', padding: '5px 0 5px 5px'}}>
-                        <h4>
+                    <RiLogoutBoxRLine size='35'/>
+                    <div style={{width: '100%', marginLeft: '5px', display: 'flex'}}>
+                        <h4 style={{margin: 'auto 0'}}>
                             Log Out
                         </h4>
                     </div>

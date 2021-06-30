@@ -170,7 +170,7 @@ export function SinglePost ({id}) {
             <div style={{margin: '5px 0 5px 0'}}>
                 {data.text}
                 <div style={{maxHeight: '680px', display: 'grid', gridTemplateColumns: 'auto auto', gridTemplateRows: 'auto auto'}}>
-                    {data.file && data.file.map(filee => <MediaPlayer file={filee}/>)}
+                    {data.file && data.file.map((filee, index) => <MediaPlayer key={index} file={filee}/>)}
 
                 </div>
             </div>
@@ -245,8 +245,8 @@ function MediaPlayer ({file}) {
     switch (type) {
         case 'image':
             return (
-                <div style={{}}>
-                    <img src={url} style={{width: '100%'}}/>
+                <div style={{width: '100%'}}>
+                    <img src={url} style={{width: '100%', height: '100%'}}/>
                 </div>
             )
         case 'video':
@@ -281,9 +281,13 @@ export function NewPost() {
     const [file, setFile] = useState([])
     const client = useSelector(state => state.firebase.profile)
     const handleFileInput = ({target}) => {
+        if (file.length >= 4) {           
+            alert('We support upload 4 files per time only')
+            return
+        }
         if (target.file && target.files[0].size >= 209715200 || !['image/jpeg', 'image/png', 'image/jpg', 'video/mp4', ].includes(target.files[0].type)) {
-            alert('File is too big or invalid file type' + target.files[0].type)
             target.value = ''
+            alert('File is too big or invalid file type' + target.files[0].type)
         }
         else setFile(prevState => [...prevState, target.files[0]])
     }
