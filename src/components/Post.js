@@ -1,14 +1,14 @@
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router";
 import { firestore } from "../firebase";
-import { SinglePost } from "./Home/HomeMid";
-
+import { SinglePost } from "./Home/SinglePost";
 export default function Post () {
     const { id } = useParams()
-    if (id)
+    const [data] = useDocumentData(firestore.doc(`posts/${id}`))
+    if (data)
     return (
         <div style={{display: 'flex', justifyContent: 'center', paddingTop: '15px'}}>
-            <SinglePost id = {id}/>
+            <SinglePost data = {data}/>
         </div>
     )
     else return (

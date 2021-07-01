@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {BsThreeDots} from 'react-icons/bs'
 import {addOpen, removeCollapse} from '../actions/chatlistAction'
 import {BsFillPersonCheckFill, BsXOctagon} from 'react-icons/bs'
-import { NewPost, SinglePost } from './Home/HomeMid'
+import { NewPost } from './Home/HomeMid'
+import { SinglePost } from './Home/SinglePost'
 import {TiTick, TiTimes} from 'react-icons/ti'
 import Tag from './Tag'
 import { BiCamera, BiCaretDown, BiMessageDetail } from 'react-icons/bi'
@@ -201,16 +202,7 @@ export  default function Profile () {
 }
 function Posts ({opponents, friends}) {
     const client = useSelector(state => state.firebase.profile)
-    // const [posts] = useCollectionData(firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id))
-    const [posts, setPosts] = useState([])
-    useEffect(() => {
-        firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id).get()
-        .then(docs => {
-            let array = []
-            docs.forEach(doc => array = array.concat(doc.id))
-            setPosts(array)
-        })
-    }, [])
+    const [posts] = useCollectionDataOnce(firestore.collection(`posts`).where('relateTo', 'array-contains', opponents.id).limit(10).orderBy('createdAt', 'desc'))
     // const [postsWithPhoto] = useCollectionDataOnce(firestore.collection(`posts`).orderBy('fileURL').orderBy('createdAt', 'desc').where('relateTo', 'array-contains', opponents.id).where('fileURL', '!=', '').limit(9))
     const [imagePaths, setImagePaths] = useState([])
     useEffect(() => {
