@@ -222,13 +222,13 @@ function Posts ({opponents, friends}) {
                 </div>
                 <div className='color3 shadow' style={{padding: '0 16px 0 16px', marginBottom: '15px', borderRadius: '10px' }}>  
                     <div style={{fontWeight: 'bold', padding: '20px 0 4px'}}>Photos</div>
-                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridRowGap: '5px', gridTemplateRows: 'auto auto auto'}}>
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '5px', gridTemplateRows: 'auto auto auto'}}>
                         {imagePaths.length !== 0 && imagePaths.map((path, index) => <SinglePhoto key={index} path={path} />)}
                     </div>
                 </div>
                 <div className='color3 shadow' style={{padding: '16px', marginBottom: '15px', borderRadius: '10px'}}>  
                     <div style={{fontWeight: 'bold'}}>Friends</div>
-                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridRowGap: '5px', gridTemplateRows: 'auto auto auto'}}>
+                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridGap: '5px', gridTemplateRows: 'auto auto auto'}}>
                         {friends && friends.map((val, index) => <SingleFriend key={index} id={val.id}/>)}
                     </div>
                 </div>
@@ -269,7 +269,7 @@ function SingleFriend ({id}) {
     return (
         <div style={{width: '100%', height: 'auto',}}>
             <Link to={'/profile/' + id}>
-                <img style={{width: '100%', height: '92.66px'}} src={user && user.avatarURL}/>
+                <img style={{width: '92.66px', height: '92.66px'}} src={user && user.avatarURL}/>
                 <div style={{width: '90px', overflow: 'hidden'}}>
                     {user && user.name}
                 </div>
