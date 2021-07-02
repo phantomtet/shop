@@ -134,7 +134,7 @@ export function MediaPlayer ({file}) {
     switch (type) {
         case 'image':
             return (
-                <div className='test' style={{width: '100%'}}>
+                <div style={{width: '100%'}}>
                     <img src={url} style={{width: '100%', height: '100%'}}/>
                 </div>
             )
@@ -192,6 +192,8 @@ export function NewPost() {
                 createdBy: client.id,
                 id: newDoc.id,
                 file: [],
+                likeCount: [],
+                dislikeCount: [],
                 numberOfComment: 0,
                 relateTo: [client.id],
                 path: `posts/${newDoc.id}`

@@ -239,7 +239,7 @@ function Posts ({opponents, friends}) {
                     {posts && posts.length ? 'Posts' : 'This user has no post yet'}
                 </div> */}
                 {client.id === opponents.id  && <NewPost/>}
-                {posts && posts.map(id => <SinglePost key={id} id={id}/>)}
+                {posts && posts.map(data => <SinglePost key={data.id} data={data}/>)}
             </div>
         </div>
     )
@@ -281,7 +281,7 @@ function SingleFriend2 ({id}) {
     const [user] = useDocumentData(firestore.collection('users').doc(id))
     return (
         <div style={{display: 'flex', minWidth: '50%', margin: '10px 0'}}>
-            <img src={user && user.avatarURL}/>
+            <img style={{width: '92.66px', height: '92.66px'}} src={user && user.avatarURL}/>
             <div>
                 {user && <Tag info={user}/>}
                 {user && <AddFriendButton id={user.id}/>}

@@ -14,55 +14,48 @@ export function SinglePost ({data}) {
     const [comment, setComment] = useState('')
     const [isCloseComment, setCloseComment] = useState(false)
     const [createdUser] = useDocumentDataOnce(firestore.doc(`users/${data.createdBy}`))
-    const [reaction] = useDocumentData(firestore.doc(`posts/${data.id}/reaction/${client.id}`))
     const [dynamicData, setDynamicData] = useState('')
+    const [reaction, setReaction] = useState('')
+    
     // dynamic data, update khi dependencies update
     useEffect(() => {
         firestore.doc(`posts/${data.id}`).get()
         .then(snapshot => setDynamicData(snapshot.data()))
     }, [reaction])
-    const handeLikeClick = async () => {
-        if (!reaction) {
-            await firestore.doc(`posts/${data.id}`).set({likeCount: firebase.firestore.FieldValue.increment(1)}, {merge: true})
-            firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: 'liked'}, {merge: true})
-            return
+    useEffect(() => {
+        if (dynamicData) {
+            if (dynamicData.likeCount.includes(client.id)) setReaction('liked')
+            else if (dynamicData.dislikeCount.includes(client.id)) setReaction('disliked')
         }
-        else switch (reaction.react) {
+    }, [dynamicData])
+    const handeLikeClick = () => {
+        switch (reaction) {
             case 'liked': 
-                await firestore.doc(`posts/${data.id}`).set({likeCount: firebase.firestore.FieldValue.increment(-1)}, {merge: true})
-                firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: ''}, {merge: true})
+                firestore.doc(data.path).update({likeCount: firebase.firestore.FieldValue.arrayRemove(client.id)}).then(() => setReaction(''))
                 return
             case 'disliked':
-                await firestore.doc(`posts/${data.id}`).set({likeCount: firebase.firestore.FieldValue.increment(1)}, {merge: true})
-                await firestore.doc(`posts/${data.id}`).set({dislikeCount: firebase.firestore.FieldValue.increment(-1)}, {merge: true})
-                firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: 'liked'}, {merge: true})
+                firestore.doc(data.path).update({dislikeCount: firebase.firestore.FieldValue.arrayRemove(client.id)})
+                .then(() => firestore.doc(data.path).update({likeCount: firebase.firestore.FieldValue.arrayUnion(client.id)})
+                .then(() => setReaction('liked')))
                 return
             case '':
-                await firestore.doc(`posts/${data.id}`).set({likeCount: firebase.firestore.FieldValue.increment(1)}, {merge: true})
-                firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: 'liked'}, {merge: true})
+                firestore.doc(data.path).update({likeCount: firebase.firestore.FieldValue.arrayUnion(client.id)}).then(() => setReaction('liked'))
                 return
         }
     }
-    const handeDislikeClick = async () => {
-        if (!reaction) {
-            await firestore.doc(`posts/${data.id}`).set({dislikeCount: firebase.firestore.FieldValue.increment(1)}, {merge: true})
-            firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: 'disliked'}, {merge: true})
+    const handeDislikeClick = () => {
+        switch (reaction) {
+        case 'disliked': 
+        firestore.doc(data.path).update({dislikeCount: firebase.firestore.FieldValue.arrayRemove(client.id)}).then(() => setReaction(''))
+        return
+        case 'liked': 
+        firestore.doc(data.path).update({likeCount: firebase.firestore.FieldValue.arrayRemove(client.id)}).then(() => setReaction(''))
+        .then(() => firestore.doc(data.path).update({dislikeCount: firebase.firestore.FieldValue.arrayUnion(client.id)})
+        .then(() => setReaction('disliked')))
+        return
+        case '':
+            firestore.doc(data.path).update({dislikeCount: firebase.firestore.FieldValue.arrayUnion(client.id)}).then(() => setReaction('disliked'))
             return
-        }
-        else switch (reaction.react) {
-            case 'liked':
-                await firestore.doc(`posts/${data.id}`).set({dislikeCount: firebase.firestore.FieldValue.increment(1)}, {merge: true})
-                await firestore.doc(`posts/${data.id}`).set({likeCount: firebase.firestore.FieldValue.increment(-1)}, {merge: true})
-                firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: 'disliked'}, {merge: true})
-                return
-            case 'disliked':
-                await firestore.doc(`posts/${data.id}`).set({dislikeCount: firebase.firestore.FieldValue.increment(-1)}, {merge: true})
-                firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: ''}, {merge: true})
-                return
-            case '':
-                await firestore.doc(`posts/${data.id}`).set({dislikeCount: firebase.firestore.FieldValue.increment(1)}, {merge: true})
-                firestore.collection(`posts/${data.id}/reaction`).doc(client.id).set({react: 'disliked'}, {merge: true})
-                return
         }
     }
     const handleFocus = (condition) => setFocus(condition)
@@ -94,7 +87,7 @@ export function SinglePost ({data}) {
         document.addEventListener('keydown', func)
         return () => document.removeEventListener('keydown', func)
     }, [focus, comment])
-    if (data)
+    if (dynamicData)
     return(
         <div className='color3 shadow' style={{borderRadius: '10px', width: '100%', padding: '12px 16px 0 16px', margin: 'auto auto 12px auto', maxWidth: '680px', minWidth: '480px'}}>
             <div style={{display: 'flex'}}>
@@ -110,20 +103,20 @@ export function SinglePost ({data}) {
             </div>
             <div style={{margin: '5px 0 5px 0'}}>
                 {data.text}
-                <div className='test' style={{maxHeight: '', display: 'grid', gridTemplateColumns: '100%', gridTemplateRows: ''}}>
+                <div style={{maxHeight: '', display: 'grid', gridTemplateColumns: '100%', gridTemplateRows: ''}}>
                     {data.file && data.file.map((filee, index) => <MediaPlayer key={index} file={filee}/>)}
 
                 </div>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-between', padding: '5px 0 5px 0'}}>
                 <div style={{display: 'flex',}}>
-                    { dynamicData.likeCount && 
+                    { dynamicData.likeCount.length !==0 && 
                     <>
-                        {dynamicData.likeCount} <BiLike color={reaction && reaction.react === 'liked' ? 'green' : ''} style={{marginRight: '10px'}}/>
+                        {dynamicData.likeCount.length} <BiLike color={reaction === 'liked' ? 'green' : ''} style={{marginRight: '10px'}}/>
                     </>}
-                    { dynamicData.dislikeCount &&
+                    { dynamicData.dislikeCount.length !==0 &&
                         <>
-                            {dynamicData.dislikeCount} <BiDislike color={reaction && reaction.react === 'disliked' ? 'red' : ''}/>
+                            {dynamicData.dislikeCount.length} <BiDislike color={reaction === 'disliked' ? 'red' : ''}/>
                         </>
                     }
                 </div>
@@ -133,11 +126,11 @@ export function SinglePost ({data}) {
             </div>
             <div style={{display: 'flex', borderTop: '1px solid #c4dfe6', borderBottom: '1px solid #c4dfe6', padding: '3px 0 3px 0'}}>
                 <div style={{display: 'flex', width: '100%', height: '40px', justifyContent: 'center'}}>
-                    <div onClick={handeLikeClick} className='canclick ' style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction && reaction.react === 'liked' ? 'green':''}}>
+                    <div onClick={handeLikeClick} className='canclick ' style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction === 'liked' ? 'green':''}}>
                         Like
                     </div>
                     
-                    <div onClick={handeDislikeClick} className='canclick 'style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction && reaction.react === 'disliked' ? 'red':''}}>
+                    <div onClick={handeDislikeClick} className='canclick 'style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction === 'disliked' ? 'red':''}}>
                         Dislike
                     </div>
                 </div>
@@ -264,7 +257,7 @@ export function SinglePost2 ({id}) {
             </div>
             <div style={{margin: '5px 0 5px 0'}}>
                 {data.text}
-                <div className='test' style={{maxHeight: '', display: 'grid', gridTemplateColumns: '100%', gridTemplateRows: ''}}>
+                <div style={{maxHeight: '', display: 'grid', gridTemplateColumns: '100%', gridTemplateRows: ''}}>
                     {data.file && data.file.map((filee, index) => <MediaPlayer key={index} file={filee}/>)}
 
                 </div>
@@ -273,12 +266,12 @@ export function SinglePost2 ({id}) {
                 <div style={{display: 'flex',}}>
                     { data.likeCount && 
                     <>
-                        {data.likeCount} <BiLike color={reaction && reaction.react === 'liked' ? 'green' : ''} style={{marginRight: '10px'}}/>
+                        {data.likeCount} <BiLike color={reaction === 'liked' ? 'green' : ''} style={{marginRight: '10px'}}/>
                     </>
                     }
                     { data.dislikeCount !== 0 &&
                         <>
-                            {data.dislikeCount} <BiDislike color={reaction && reaction.react === 'disliked' ? 'red' : ''}/>
+                            {data.dislikeCount} <BiDislike color={reaction === 'disliked' ? 'red' : ''}/>
                         </>
                     }
                 </div>
@@ -288,11 +281,11 @@ export function SinglePost2 ({id}) {
             </div>
             <div style={{display: 'flex', borderTop: '1px solid #c4dfe6', borderBottom: '1px solid #c4dfe6', padding: '3px 0 3px 0'}}>
                 <div style={{display: 'flex', width: '100%', height: '40px', justifyContent: 'center'}}>
-                    <div onClick={handeLikeClick} className='canclick ' style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction && reaction.react === 'liked' ? 'green':''}}>
+                    <div onClick={handeLikeClick} className='canclick ' style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction === 'liked' ? 'green':''}}>
                         Like
                     </div>
                     
-                    <div onClick={handeDislikeClick} className='canclick 'style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction && reaction.react === 'disliked' ? 'red':''}}>
+                    <div onClick={handeDislikeClick} className='canclick 'style={{width: '100%', justifyContent: 'center', display: 'flex', padding: '12px 0 12px 0', color: reaction === 'disliked' ? 'red':''}}>
                         Dislike
                     </div>
                 </div>

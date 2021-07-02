@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import 'firebase/firestore'
 
 
-const firebaseConfig = {
+const firebaseConfig2 = {
     apiKey: "AIzaSyDOyd9uMTGsFAIthJa-zkyyK5wqU9qtERY",
     authDomain: "facebook-87300.firebaseapp.com",
     projectId: "facebook-87300",
@@ -11,7 +11,7 @@ const firebaseConfig = {
     appId: "1:93684704070:web:cc7dbfbe54fd28befabb47",
     measurementId: "G-B7YDM3KTXG"
 };
-var firebaseConfig2 = {
+var firebaseConfig = {
   apiKey: "AIzaSyAlrl8oPDKTSxa64q5Q1cSD_j7f863kdZ0",
   authDomain: "fakebook2-1953a.firebaseapp.com",
   projectId: "fakebook2-1953a",
