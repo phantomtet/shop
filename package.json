@@ -13,7 +13,6 @@
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^3.0.4",
     "react-icons": "^4.2.0",
-    "react-loadingg": "^1.7.2",
     "react-player": "^2.9.0",
     "react-redux": "^7.2.4",
     "react-redux-firebase": "^3.10.0",
@@ -21,7 +20,6 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
     "redux-firestore": "^0.15.0",
-    "socket.io-client": "^4.1.2",
     "uuidv4": "^6.2.10",
     "web-vitals": "^1.1.2"
   },

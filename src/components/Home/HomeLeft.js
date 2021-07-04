@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 export default function HomeLeft () {
     const user = useSelector(state => state.firebase.profile)
     return (
-        <div className='color2 left' style={{position: 'sticky', height: 'calc(100vh - 50px)', left: 0, top: 0, width: '360px', padding: '10px 5px 10px 5px', color: 'whitesmoke', overflow: 'auto'}}>
+        <div className='color2 left' style={{position: 'fixed', height: 'calc(100vh - 50px)', left: 0, top: 50, width: '360px', padding: '10px 5px 10px 5px', color: 'whitesmoke', overflow: 'auto'}}>
             <div className='' style={{height: '100%', overflow: 'auto'}}>
                 <div className='shadow '>
                     <Link to={'/profile/' + user.id}>

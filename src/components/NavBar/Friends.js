@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom'
-import {useCollectionData, useDocumentData, useDocumentDataOnce} from 'react-firebase-hooks/firestore'
+import {useDocumentDataOnce} from 'react-firebase-hooks/firestore'
 import {firestore} from '../../firebase'
-import Tag from '../Tag'
 import {FaUserFriends} from 'react-icons/fa'
 import { RiUserReceivedFill, RiArrowRightSLine, RiUserAddFill } from 'react-icons/ri'
 import { useSelector } from 'react-redux'
@@ -19,9 +18,10 @@ export function FriendsButton () {
 export function Friends () {
     const { path, url } = useRouteMatch()
     return(
-        <div style={{display: 'flex', height: 'calc(100vh -50px)'}}>
-            <div style={{height: '100%'}}>
-                <div className='color3 shadow test' style={{position: 'sticky', zIndex: '3', minWidth: '300px', height: '100%', top: '50px', padding: '10px 5px'}}>
+        <div  style={{display: 'flex', height: 'calc(100vh - 50px)'}}>
+            <div style={{height: 'calc(100vh - 50px)'}}>
+                <div style={{minWidth: '300px'}}></div>
+                <div className='color3 shadow' style={{position: 'fixed', zIndex: '3', minWidth: '300px', height: '100%', top: '50px', padding: '10px 5px'}}>
                     <div style={{fontWeight: 'bolder', fontSize: '30px'}}>
                         Friends
                     </div>
@@ -46,8 +46,8 @@ export function Friends () {
                             <RiArrowRightSLine size='30'/>
                         </div>
                     </Link>
-                    <div style={{overflow: 'auto', height: '70vh', position: 'sticky'}}>
-                    <Route path={`${path}/:topic`}><List/></Route>
+                    <div style={{overflow: 'auto', height: 'calc(100vh - 245px)', position: 'sticky'}}>
+                        <Route path={`${path}/:topic`}><List/></Route>
                     </div>
                 </div>
             </div>

@@ -18,7 +18,9 @@ export function Home () {
     return (
         <div id='home'>
             <HomeLeft/>
+            <div className='left' style={{minWidth: '360px'}}></div>
             {client.id && <HomeMid client={client}/>}
+            <div className='right' style={{minWidth: '360px'}}></div>
             <HomeRight/>
         </div>
     )
