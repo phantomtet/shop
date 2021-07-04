@@ -21,7 +21,7 @@ export default function HomeRight () {
         }
     }, [client])
     return (
-        <div className='color2 right' style={{position: 'sticky',top: 0, padding: '50px 5px 10px 5px', right: '0', width: '360px',  height: '100vh', color: 'whitesmoke'}}>
+        <div className='color2 right' style={{position: 'sticky',top: 0, padding: '0px 5px 10px 5px', right: '0', width: '360px',  height: 'calc(100vh - 50px)', color: 'whitesmoke'}}>
            
             <div className='' style={{overflow: 'auto', height: '100%'}}>
                 <div className='shadow' >

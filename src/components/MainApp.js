@@ -12,7 +12,7 @@ export default function MainApp () {
         <div>
             <Router>
                 <NavBar/>
-                {/* <div style={{height: '50px'}}></div> */}
+                <div style={{height: '50px'}}></div>
                 <Switch>
                     <Route exact path="/"><Home/></Route>
                     <Route path="/friends"><Friends/></Route>

@@ -19,9 +19,9 @@ export function FriendsButton () {
 export function Friends () {
     const { path, url } = useRouteMatch()
     return(
-        <div style={{display: 'flex', minHeight: '100%'}}>
-            <div style={{}}>
-                <div className='color3 shadow' style={{position: 'sticky', minWidth: '300px', height: '30vh' - '50px', top: '50px', padding: '10px 5px'}}>
+        <div style={{display: 'flex', height: 'calc(100vh -50px)'}}>
+            <div style={{height: '100%'}}>
+                <div className='color3 shadow test' style={{position: 'sticky', zIndex: '3', minWidth: '300px', height: '100%', top: '50px', padding: '10px 5px'}}>
                     <div style={{fontWeight: 'bolder', fontSize: '30px'}}>
                         Friends
                     </div>

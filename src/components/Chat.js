@@ -11,7 +11,7 @@ export default function Chat () {
     const client = useSelector(state => state.firebase.profile)
     const chatlist = useSelector(state => state.chatlist)
     return (
-        <div className='' style={{position: 'fixed', bottom: 0, right: '80px'}}>
+        <div className='' style={{position: 'fixed', bottom: 0, right: '80px', zIndex: '5'}}>
             <div className='canclick circle2 ' style={{position: 'fixed', bottom: '0', right: '0', margin: '10px'}}>
                 <img style={{width: '30px', position: 'relative', top: '14px', left: '15px'}} src='https://static.thenounproject.com/png/729124-200.png'/>  
             </div>
