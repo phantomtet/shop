@@ -105,7 +105,7 @@ export default function HomeMid () {
     // }, [followIDs])
     
     return (
-        <div className='mid' style={{minWidth: '500px', maxWidth: '680px'}}>
+        <div className='mid' style={{minWidth: '500px', maxWidth: '680px', width: '50vw'}}>
             <NewPost/>
             {posts && posts.map(data => <SinglePost key={data.id} data={data}/>)}
             <button onClick={addNewPosts}>Fetch new post</button>
